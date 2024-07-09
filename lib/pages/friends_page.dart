@@ -12,7 +12,7 @@ class FriendsTab extends StatelessWidget {
         ),
         ListTile(
           leading: CircleAvatar(
-            backgroundImage: AssetImage('assets/user2.jpg'),
+            backgroundImage: AssetImage('assets/images/user1.png'),
           ),
           title: Text('신유'),
           subtitle: Text('챌린지 5개 성공'),
@@ -21,7 +21,7 @@ class FriendsTab extends StatelessWidget {
         Divider(),
         ListTile(
           leading: CircleAvatar(
-            backgroundImage: AssetImage('assets/user3.jpg'),
+            backgroundImage: AssetImage('assets/images/user1.png'),
           ),
           title: Text('도훈'),
           subtitle: Text('챌린지 3개 성공'),
@@ -30,7 +30,7 @@ class FriendsTab extends StatelessWidget {
         Divider(),
         ListTile(
           leading: CircleAvatar(
-            backgroundImage: AssetImage('assets/user4.jpg'),
+            backgroundImage: AssetImage('assets/images/user1.png'),
           ),
           title: Text('영재'),
           subtitle: Text('챌린지 3개 성공'),
@@ -39,7 +39,7 @@ class FriendsTab extends StatelessWidget {
         Divider(),
         ListTile(
           leading: CircleAvatar(
-            backgroundImage: AssetImage('assets/user5.jpg'),
+            backgroundImage: AssetImage('assets/images/user1.png'),
           ),
           title: Text('한진'),
           subtitle: Text('챌린지 3개 성공'),
@@ -48,7 +48,7 @@ class FriendsTab extends StatelessWidget {
         Divider(),
         ListTile(
           leading: CircleAvatar(
-            backgroundImage: AssetImage('assets/user6.jpg'),
+            backgroundImage: AssetImage('assets/images/user1.png'),
           ),
           title: Text('경민'),
           subtitle: Text('챌린지 3개 성공'),

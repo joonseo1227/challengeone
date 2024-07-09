@@ -27,48 +27,53 @@ class _DialogUIState extends State<DialogUI> {
         borderRadius: BorderRadius.circular(0),
       ),
       backgroundColor: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(32, 32, 32, 16),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                widget.title,
-                style: Fonts.title,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(32, 32, 32, 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    widget.title,
+                    style: Fonts.title,
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  Text(
+                    widget.content,
+                    style: Fonts.subtitle,
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                ],
               ),
-              const SizedBox(
-                height: 16,
-              ),
-              Text(
-                widget.content,
-                style: Fonts.subtitle,
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              widget.buttonAxis == Axis.horizontal
-                  ? Row(
-                      children: widget.buttons
-                          .map((buttonData) => Expanded(
-                                child: DialogButton(
-                                  text: buttonData.text,
-                                  onTap: buttonData.onTap,
-                                ),
-                              ))
-                          .toList(),
-                    )
-                  : Column(
-                      children: widget.buttons
-                          .map((buttonData) => DialogButton(
+            ),
+            widget.buttonAxis == Axis.horizontal
+                ? Row(
+                    children: widget.buttons
+                        .map((buttonData) => Expanded(
+                              child: DialogButton(
                                 text: buttonData.text,
                                 onTap: buttonData.onTap,
-                              ))
-                          .toList(),
-                    ),
-            ],
-          ),
+                              ),
+                            ))
+                        .toList(),
+                  )
+                : Column(
+                    children: widget.buttons
+                        .map((buttonData) => DialogButton(
+                              text: buttonData.text,
+                              onTap: buttonData.onTap,
+                            ))
+                        .toList(),
+                  ),
+          ],
         ),
       ),
     );

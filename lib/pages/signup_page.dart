@@ -185,63 +185,65 @@ class _SignupPageState extends State<SignupPage> {
         title: Text("회원 가입"),
         backgroundColor: Colors.white,
       ),
-      body: Padding(
-        padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CustomTextField(
-              label: '이름',
-              hint: '홍길동',
-              controller: _usernameController,
-              errorText: _usernameError,
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            CustomTextField(
-              label: '이메일',
-              hint: 'example@example.com',
-              controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
-              errorText: _emailError,
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            CustomTextField(
-              label: '암호',
-              obscureText: true,
-              controller: _passwordController,
-              errorText: _passwordError,
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            CustomTextField(
-              label: '암호 재입력',
-              obscureText: true,
-              controller: _confirmPasswordController,
-              errorText: _confirmPasswordError,
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            CustomButton(
-              text: "계속",
-              isEnabled: _isSignUpButtonEnabled,
-              onTap: () {
-                if (_isSignUpButtonEnabled) {
-                  trySignUp(
-                    _usernameController.text,
-                    _emailController.text,
-                    _passwordController.text,
-                  );
-                }
-              },
-            ),
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomTextField(
+                label: '이름',
+                hint: '홍길동',
+                controller: _usernameController,
+                errorText: _usernameError,
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              CustomTextField(
+                label: '이메일',
+                hint: 'example@example.com',
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                errorText: _emailError,
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              CustomTextField(
+                label: '암호',
+                obscureText: true,
+                controller: _passwordController,
+                errorText: _passwordError,
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              CustomTextField(
+                label: '암호 재입력',
+                obscureText: true,
+                controller: _confirmPasswordController,
+                errorText: _confirmPasswordError,
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              CustomButton(
+                text: "계속",
+                isEnabled: _isSignUpButtonEnabled,
+                onTap: () {
+                  if (_isSignUpButtonEnabled) {
+                    trySignUp(
+                      _usernameController.text,
+                      _emailController.text,
+                      _passwordController.text,
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

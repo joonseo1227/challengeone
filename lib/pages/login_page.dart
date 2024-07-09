@@ -102,93 +102,95 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "로그인",
-              style: Fonts.title,
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            CustomTextField(
-              label: '이메일',
-              hint: 'example@example.com',
-              controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            CustomTextField(
-              label: '암호',
-              obscureText: true,
-              controller: _passwordController,
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            CustomButton(
-              text: "로그인",
-              isEnabled: _isLoginButtonEnabled,
-              onTap: () {
-                if (_isLoginButtonEnabled) {
-                  tryLogin(_emailController.text, _passwordController.text);
-                }
-              },
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Row(
-              children: [
-                CustomButton(
-                  text: "회원 가입",
-                  textStyle: Fonts.subtitle,
-                  borderColor: Colors.transparent,
-                  onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => SignupPage()));
-                  },
-                ),
-                const Spacer(),
-                CustomButton(
-                  text: "게스트 모드",
-                  textStyle: Fonts.subtitle,
-                  borderColor: Colors.transparent,
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return DialogUI(
-                          title: '게스트 모드',
-                          content: '로그인 없이 탐색할 수 있어요. 게스트 모드를 시작할까요?',
-                          buttons: [
-                            DialogButtonData(
-                                text: '취소',
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                }),
-                            DialogButtonData(
-                                text: '시작',
-                                onTap: () {
-                                  Navigator.of(context).pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                          builder: (context) => HomePage()),
-                                      (route) => false);
-                                }),
-                          ],
-                          buttonAxis: Axis.horizontal,
-                        );
-                      },
-                    );
-                  },
-                ),
-              ],
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "로그인",
+                style: Fonts.title,
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              CustomTextField(
+                label: '이메일',
+                hint: 'example@example.com',
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              CustomTextField(
+                label: '암호',
+                obscureText: true,
+                controller: _passwordController,
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              CustomButton(
+                text: "로그인",
+                isEnabled: _isLoginButtonEnabled,
+                onTap: () {
+                  if (_isLoginButtonEnabled) {
+                    tryLogin(_emailController.text, _passwordController.text);
+                  }
+                },
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              Row(
+                children: [
+                  CustomButton(
+                    text: "회원 가입",
+                    textStyle: Fonts.subtitle,
+                    borderColor: Colors.transparent,
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => SignupPage()));
+                    },
+                  ),
+                  const Spacer(),
+                  CustomButton(
+                    text: "게스트 모드",
+                    textStyle: Fonts.subtitle,
+                    borderColor: Colors.transparent,
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return DialogUI(
+                            title: '게스트 모드',
+                            content: '로그인 없이 탐색할 수 있어요. 게스트 모드를 시작할까요?',
+                            buttons: [
+                              DialogButtonData(
+                                  text: '취소',
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                  }),
+                              DialogButtonData(
+                                  text: '시작',
+                                  onTap: () {
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(
+                                            builder: (context) => HomePage()),
+                                        (route) => false);
+                                  }),
+                            ],
+                            buttonAxis: Axis.horizontal,
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

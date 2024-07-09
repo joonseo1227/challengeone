@@ -1,6 +1,7 @@
 import 'package:challengeone/pages/login_page.dart';
 import 'package:challengeone/widgets/button.dart';
 import 'package:challengeone/widgets/dialog.dart';
+import 'package:challengeone/widgets/imageavatar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -16,16 +17,41 @@ class _ProfileTabState extends State<ProfileTab> {
   Widget build(BuildContext context) {
     return ListView(
       children: <Widget>[
-        ListTile(
-          leading: CircleAvatar(
-            backgroundImage: AssetImage('assets/user1.jpg'),
-            radius: 32,
+        Container(
+          margin: EdgeInsets.fromLTRB(16, 0, 16, 16),
+          child: Row(
+            children: [
+              ImageAvatar(
+                size: 96,
+                type: Shape.STORY,
+              ),
+              SizedBox(
+                width: 16,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    user?.displayName ?? '사용자 이름 없음',
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Text(
+                    '레벨 10\n친구 5명',
+                    style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
-          title: Text(user?.displayName ?? '사용자 이름 없음'),
-          subtitle: Text('레벨 10\n친구 5명'),
-          trailing: Icon(Icons.check_circle, color: Colors.green),
         ),
-        Divider(),
         ListTile(
           title: Text('통계'),
           subtitle: Text('15개 챌린지 성공'),

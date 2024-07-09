@@ -3,6 +3,7 @@ import 'package:challengeone/pages/challenge_page.dart';
 import 'package:challengeone/pages/friends_page.dart';
 import 'package:challengeone/pages/notifications_page.dart';
 import 'package:challengeone/pages/profile_page.dart';
+import 'package:challengeone/widgets/stories.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -161,44 +162,6 @@ class ListTitle extends StatelessWidget {
                 Fonts.subtitle, // Assuming Fonts.subtitle is defined elsewhere
           ),
         ],
-      ),
-    );
-  }
-}
-
-class Stories extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 160,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 10,
-        padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-        itemBuilder: (context, index) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                child: CircleAvatar(
-                  radius: 36,
-                  backgroundImage: AssetImage('assets/user${index + 1}.jpg'),
-                ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                'handel$index',
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          );
-        },
       ),
     );
   }

@@ -34,7 +34,7 @@ void main() async {
         listTileTheme: const ListTileThemeData(
           titleTextStyle: TextStyle(
             fontSize: 18,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w400,
             color: Colors.black87,
           ),
           subtitleTextStyle: TextStyle(
