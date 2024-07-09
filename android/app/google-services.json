@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "377968466678",
+    "project_id": "challengeone-94ab2",
+    "storage_bucket": "challengeone-94ab2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:377968466678:android:46758b712738cdba63aad7",
+        "android_client_info": {
+          "package_name": "com.joonseo1227.challengeone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGG2arLdHeSEKAvgoZzoHQTk58LnSVqMc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
