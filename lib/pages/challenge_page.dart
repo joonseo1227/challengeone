@@ -2,6 +2,8 @@ import 'package:challengeone/pages/home_page.dart';
 import 'package:flutter/material.dart';
 
 class ChallengeTab extends StatelessWidget {
+  const ChallengeTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ListView(

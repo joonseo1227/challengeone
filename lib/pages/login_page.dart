@@ -97,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: white,
       appBar: AppBar(
         title: const Text(
-          "Challenge One",
+          "로그인",
         ),
         backgroundColor: white,
       ),
@@ -121,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
               CustomTextField(
@@ -132,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(
                 height: 16,
               ),
-              CustomButton(
+              PrimaryButton(
                 text: "로그인",
                 isEnabled: _isLoginButtonEnabled,
                 onTap: () {
@@ -146,20 +146,16 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Row(
                 children: [
-                  CustomButton(
+                  GhostButton(
                     text: "회원 가입",
-                    textStyle: Fonts.subtitle,
-                    borderColor: Colors.transparent,
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => SignupPage()));
                     },
                   ),
                   const Spacer(),
-                  CustomButton(
+                  GhostButton(
                     text: "게스트 모드",
-                    textStyle: Fonts.subtitle,
-                    borderColor: Colors.transparent,
                     onTap: () {
                       showDialog(
                         context: context,

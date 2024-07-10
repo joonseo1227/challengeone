@@ -230,7 +230,7 @@ class _SignupPageState extends State<SignupPage> {
               const SizedBox(
                 height: 16,
               ),
-              CustomButton(
+              PrimaryButton(
                 text: "계속",
                 isEnabled: _isSignUpButtonEnabled,
                 onTap: () {

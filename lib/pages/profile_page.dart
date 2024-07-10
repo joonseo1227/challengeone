@@ -62,7 +62,7 @@ class _ProfileTabState extends State<ProfileTab> {
         ),
         Padding(
           padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-          child: CustomButton(
+          child: SecondaryButton(
             text: "로그아웃",
             onTap: () async {
               await FirebaseAuth.instance.signOut();
