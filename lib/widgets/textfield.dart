@@ -1,3 +1,4 @@
+import 'package:challengeone/config/color.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatefulWidget {
@@ -56,7 +57,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           widget.label,
           style: TextStyle(
             fontSize: 14,
-            color: Colors.black87,
+            color: grey100,
           ),
         ),
         SizedBox(
@@ -72,10 +73,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
             decoration: InputDecoration(
               hintText: widget.hint,
               hintStyle: TextStyle(
-                color: Colors.black38,
+                color: grey40,
               ),
               filled: true,
-              fillColor: Colors.grey.shade200,
+              fillColor: grey10,
               enabledBorder: UnderlineInputBorder(
                 borderRadius: BorderRadius.circular(0),
                 borderSide: BorderSide(
@@ -104,7 +105,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: Colors.red,
+                  color: red60,
                 ),
               ),
             ],
@@ -115,11 +116,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   Color _getErrorBorderColor() {
     return widget.errorText != null && widget.errorText!.isNotEmpty
-        ? Colors.red
-        : Colors.black54;
+        ? red60
+        : grey60;
   }
 
   Color _getFocusBorderColor() {
-    return _hasFocus ? Colors.blueAccent : Colors.black54;
+    return _hasFocus ? blue50 : grey60;
   }
 }

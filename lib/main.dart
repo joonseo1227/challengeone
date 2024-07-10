@@ -1,3 +1,4 @@
+import 'package:challengeone/config/color.dart';
 import 'package:challengeone/pages/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -14,49 +15,49 @@ void main() async {
     MaterialApp(
       theme: ThemeData(
         fontFamily: "Pretendard",
-        scaffoldBackgroundColor: Colors.grey.shade100,
-        appBarTheme: AppBarTheme(
+        scaffoldBackgroundColor: grey10,
+        appBarTheme: const AppBarTheme(
           scrolledUnderElevation: 0,
-          backgroundColor: Colors.grey.shade100,
+          backgroundColor: grey10,
           toolbarHeight: 80,
           centerTitle: false,
           titleTextStyle: TextStyle(
-            color: Colors.black87,
+            color: grey100,
             fontSize: 24,
             fontWeight: FontWeight.w600,
           ),
         ),
-        textSelectionTheme: TextSelectionThemeData(
-          cursorColor: Colors.black87,
-          selectionHandleColor: Colors.black87,
-          selectionColor: Colors.black12,
+        textSelectionTheme: const TextSelectionThemeData(
+          cursorColor: blue50,
+          selectionHandleColor: blue50,
+          selectionColor: blue30,
         ),
         listTileTheme: const ListTileThemeData(
           titleTextStyle: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
-            color: Colors.black87,
+            color: grey100,
           ),
           subtitleTextStyle: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,
-            color: Colors.black54,
+            color: grey60,
           ),
-          tileColor: Colors.white,
+          tileColor: white,
           contentPadding: EdgeInsets.fromLTRB(16, 8, 16, 8),
         ),
-        dividerTheme: DividerThemeData(
-          color: Colors.grey.shade300,
+        dividerTheme: const DividerThemeData(
+          color: grey20,
           indent: 16,
           endIndent: 16,
           space: 0,
           thickness: 1,
         ),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          backgroundColor: Colors.grey.shade100,
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          backgroundColor: grey10,
           elevation: 0,
-          selectedItemColor: Colors.black87,
-          unselectedItemColor: Colors.black38,
+          selectedItemColor: grey100,
+          unselectedItemColor: grey50,
           selectedLabelStyle: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w500,
@@ -66,11 +67,11 @@ void main() async {
             fontWeight: FontWeight.w500,
           ),
         ),
-        progressIndicatorTheme: ProgressIndicatorThemeData(
-          color: Colors.white,
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+          color: white,
         ),
       ),
-      home: LoginPage(),
+      home: const LoginPage(),
     ),
   );
 }

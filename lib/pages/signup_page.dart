@@ -1,3 +1,4 @@
+import 'package:challengeone/config/color.dart';
 import 'package:challengeone/pages/login_page.dart';
 import 'package:challengeone/widgets/button.dart';
 import 'package:challengeone/widgets/dialog.dart';
@@ -180,10 +181,10 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: white,
       appBar: AppBar(
         title: Text("회원 가입"),
-        backgroundColor: Colors.white,
+        backgroundColor: white,
       ),
       body: SingleChildScrollView(
         child: Padding(

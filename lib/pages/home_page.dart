@@ -1,3 +1,4 @@
+import 'package:challengeone/config/color.dart';
 import 'package:challengeone/config/font.dart';
 import 'package:challengeone/pages/challenge_page.dart';
 import 'package:challengeone/pages/friends_page.dart';
@@ -89,7 +90,7 @@ class HomeTab extends StatelessWidget {
         ListTile(
           title: Text('아침 달리기'),
           subtitle: Text('30분 달리기'),
-          trailing: Icon(Icons.check_circle, color: Colors.green),
+          trailing: Icon(Icons.check_circle, color: green40),
         ),
         Divider(),
         ListTile(
@@ -107,7 +108,7 @@ class HomeTab extends StatelessWidget {
         ListTile(
           title: Text('아침 달리기'),
           subtitle: Text('30분 달리기'),
-          trailing: Icon(Icons.check_circle, color: Colors.green),
+          trailing: Icon(Icons.check_circle, color: green40),
         ),
         Divider(),
         ListTile(

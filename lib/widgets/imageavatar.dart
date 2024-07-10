@@ -1,3 +1,4 @@
+import 'package:challengeone/config/color.dart';
 import 'package:flutter/material.dart';
 
 enum Shape { ON, OFF, STORY, MYSTORY }
@@ -27,8 +28,7 @@ class ImageAvatar extends StatelessWidget {
   Widget _basicAvatar() {
     return Container(
       padding: const EdgeInsets.all(4),
-      decoration:
-          const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+      decoration: const BoxDecoration(color: white, shape: BoxShape.circle),
       child: CircleAvatar(
         radius: size / 2,
         backgroundImage: AssetImage('assets/images/user1.png'),
@@ -51,9 +51,9 @@ class ImageAvatar extends StatelessWidget {
           end: Alignment.topRight,
           colors: [
             // hex 컬러
-            Color(0xfffce80a), // 노랑
-            Color(0xfffc3a0a), // 빨강
-            Color(0xffc80afc), // 보라
+            yellow30, // 노랑
+            red60, // 빨강
+            magenta60, // 보라
           ],
         ),
       ),
@@ -61,7 +61,7 @@ class ImageAvatar extends StatelessWidget {
         margin: const EdgeInsets.all(4),
         decoration: const BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.white,
+          color: white,
         ),
         child: _basicAvatar(),
       ),
@@ -74,7 +74,7 @@ class ImageAvatar extends StatelessWidget {
       width: size + 4,
       padding: const EdgeInsets.all(4),
       decoration: const BoxDecoration(
-        color: Colors.black,
+        color: black,
         shape: BoxShape.circle,
       ),
       child: _basicAvatar(),
@@ -87,7 +87,7 @@ class ImageAvatar extends StatelessWidget {
       width: size + 4,
       padding: const EdgeInsets.all(4),
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: white,
         shape: BoxShape.circle,
       ),
       child: _basicAvatar(),
@@ -108,7 +108,7 @@ class ImageAvatar extends StatelessWidget {
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.grey.shade100,
+                color: grey10,
               ),
               child: Container(
                 width: 20,
@@ -116,7 +116,7 @@ class ImageAvatar extends StatelessWidget {
                 padding: const EdgeInsets.all(2),
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.blueAccent,
+                  color: blue50,
                 ),
                 child: const Icon(
                   size: 16,

@@ -1,3 +1,4 @@
+import 'package:challengeone/config/color.dart';
 import 'package:challengeone/widgets/imageavatar.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +32,7 @@ class _StoriesState extends State<Stories> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.black87,
+                  color: grey60,
                 ),
               ),
             ],
@@ -56,7 +57,7 @@ class _StoriesState extends State<Stories> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 14,
-                        color: Colors.black87,
+                        color: grey80,
                       ),
                     ),
                   ),

@@ -1,3 +1,4 @@
+import 'package:challengeone/config/color.dart';
 import 'package:challengeone/pages/home_page.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,7 @@ class FriendsTab extends StatelessWidget {
           ),
           title: Text('신유'),
           subtitle: Text('챌린지 5개 성공'),
-          trailing: Icon(Icons.check_circle, color: Colors.green),
+          trailing: Icon(Icons.check_circle, color: green40),
         ),
         Divider(),
         ListTile(

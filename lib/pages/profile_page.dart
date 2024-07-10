@@ -1,3 +1,4 @@
+import 'package:challengeone/config/color.dart';
 import 'package:challengeone/pages/login_page.dart';
 import 'package:challengeone/widgets/button.dart';
 import 'package:challengeone/widgets/dialog.dart';
@@ -34,7 +35,7 @@ class _ProfileTabState extends State<ProfileTab> {
                   Text(
                     user?.displayName ?? '사용자 이름 없음',
                     style: TextStyle(
-                      color: Colors.black87,
+                      color: grey100,
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
                     ),
@@ -42,7 +43,7 @@ class _ProfileTabState extends State<ProfileTab> {
                   Text(
                     '레벨 10\n친구 5명',
                     style: TextStyle(
-                      color: Colors.black54,
+                      color: grey50,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),

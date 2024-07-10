@@ -1,3 +1,4 @@
+import 'package:challengeone/config/color.dart';
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatefulWidget {
@@ -13,8 +14,8 @@ class CustomButton extends StatefulWidget {
   const CustomButton({
     Key? key,
     required this.text,
-    this.textStyle = const TextStyle(color: Colors.black87, fontSize: 16),
-    this.borderColor = Colors.black12,
+    this.textStyle = const TextStyle(color: grey100, fontSize: 16),
+    this.borderColor = grey30,
     this.borderWidth = 1.0,
     this.backgroundColor = Colors.transparent,
     this.isEnabled = true,
@@ -46,7 +47,7 @@ class _CustomButtonState extends State<CustomButton> {
           child: Text(
             widget.text,
             style: widget.textStyle.copyWith(
-              color: widget.isEnabled ? widget.textStyle.color : Colors.grey,
+              color: widget.isEnabled ? widget.textStyle.color : grey40,
             ),
           ),
         ),

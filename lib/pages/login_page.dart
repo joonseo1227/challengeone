@@ -1,3 +1,4 @@
+import 'package:challengeone/config/color.dart';
 import 'package:challengeone/config/font.dart';
 import 'package:challengeone/pages/home_page.dart';
 import 'package:challengeone/pages/signup_page.dart';
@@ -93,12 +94,12 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: white,
       appBar: AppBar(
         title: const Text(
           "Challenge One",
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: white,
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),

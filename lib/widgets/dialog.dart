@@ -1,3 +1,4 @@
+import 'package:challengeone/config/color.dart';
 import 'package:challengeone/config/font.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +27,7 @@ class _DialogUIState extends State<DialogUI> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(0),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: white,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,7 +96,7 @@ class DialogButton extends StatelessWidget {
     Key? key,
     required this.text,
     this.onTap,
-    this.textColor = Colors.black87,
+    this.textColor = grey100,
     this.textSize = 16.0,
     this.textWeight = FontWeight.bold,
     this.backgroundColor = Colors.transparent,
