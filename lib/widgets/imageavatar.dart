@@ -27,7 +27,7 @@ class ImageAvatar extends StatelessWidget {
 
   Widget _basicAvatar() {
     return Container(
-      padding: const EdgeInsets.all(4),
+      padding: const EdgeInsets.all(3),
       decoration: const BoxDecoration(color: white, shape: BoxShape.circle),
       child: CircleAvatar(
         radius: size / 2,
@@ -38,8 +38,8 @@ class ImageAvatar extends StatelessWidget {
 
   Widget _storyAvatar() {
     return Container(
-      height: size + 4,
-      width: size + 4,
+      height: size + 3,
+      width: size + 3,
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
         // 스토리 영역의 테두리를
@@ -50,15 +50,14 @@ class ImageAvatar extends StatelessWidget {
           // 종료 되는 방향 지정
           end: Alignment.topRight,
           colors: [
-            // hex 컬러
-            yellow30, // 노랑
-            red60, // 빨강
-            magenta60, // 보라
+            purple60,
+            blue50,
+            teal30,
           ],
         ),
       ),
       child: Container(
-        margin: const EdgeInsets.all(4),
+        margin: const EdgeInsets.all(3),
         decoration: const BoxDecoration(
           shape: BoxShape.circle,
           color: white,
@@ -70,9 +69,9 @@ class ImageAvatar extends StatelessWidget {
 
   Widget _onAvatar() {
     return Container(
-      height: size + 4,
-      width: size + 4,
-      padding: const EdgeInsets.all(4),
+      height: size + 3,
+      width: size + 3,
+      padding: const EdgeInsets.all(3),
       decoration: const BoxDecoration(
         color: black,
         shape: BoxShape.circle,
@@ -83,9 +82,9 @@ class ImageAvatar extends StatelessWidget {
 
   Widget _offAvatar() {
     return Container(
-      height: size + 4,
-      width: size + 4,
-      padding: const EdgeInsets.all(4),
+      height: size + 3,
+      width: size + 3,
+      padding: const EdgeInsets.all(3),
       decoration: const BoxDecoration(
         color: white,
         shape: BoxShape.circle,
@@ -105,7 +104,7 @@ class ImageAvatar extends StatelessWidget {
             bottom: 0.5, //하단부
             right: 0.5, //우측
             child: Container(
-              padding: const EdgeInsets.all(4),
+              padding: const EdgeInsets.all(3),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: grey10,
