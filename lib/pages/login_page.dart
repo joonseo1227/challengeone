@@ -1,5 +1,4 @@
 import 'package:challengeone/config/color.dart';
-import 'package:challengeone/config/font.dart';
 import 'package:challengeone/pages/home_page.dart';
 import 'package:challengeone/pages/signup_page.dart';
 import 'package:challengeone/widgets/button.dart';
@@ -61,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.of(context).pop(); // Close the loading dialog
       if (auth.currentUser?.uid != null) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => HomeTab()),
         );
       }
     } catch (e) {
@@ -99,6 +98,39 @@ class _LoginPageState extends State<LoginPage> {
         title: const Text(
           "로그인",
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return DialogUI(
+                    title: '게스트 모드',
+                    content: '로그인 없이 탐색할 수 있어요. 게스트 모드를 시작할까요?',
+                    buttons: [
+                      DialogButtonData(
+                          text: '취소',
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          }),
+                      DialogButtonData(
+                          text: '시작',
+                          onTap: () {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => HomePage()),
+                                (route) => false);
+                          }),
+                    ],
+                    buttonAxis: Axis.horizontal,
+                  );
+                },
+              );
+            },
+            icon: Icon(Icons.close),
+            color: grey100,
+          ),
+        ],
         backgroundColor: white,
       ),
       body: Padding(
@@ -108,12 +140,19 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(
+                height: 48,
+              ),
               const Text(
-                "로그인",
-                style: Fonts.title,
+                "친구와 함께\n도전하세요",
+                style: TextStyle(
+                  color: grey100,
+                  fontSize: 32,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               const SizedBox(
-                height: 16,
+                height: 48,
               ),
               CustomTextField(
                 label: '이메일',
@@ -155,27 +194,19 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const Spacer(),
                   GhostButton(
-                    text: "게스트 모드",
+                    text: "암호를 잊으셨나요?",
                     onTap: () {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return DialogUI(
-                            title: '게스트 모드',
-                            content: '로그인 없이 탐색할 수 있어요. 게스트 모드를 시작할까요?',
+                            title: '암호를 잊었다',
+                            content: '자랑이다',
                             buttons: [
                               DialogButtonData(
-                                  text: '취소',
+                                  text: '닫기',
                                   onTap: () {
                                     Navigator.of(context).pop();
-                                  }),
-                              DialogButtonData(
-                                  text: '시작',
-                                  onTap: () {
-                                    Navigator.of(context).pushAndRemoveUntil(
-                                        MaterialPageRoute(
-                                            builder: (context) => HomePage()),
-                                        (route) => false);
                                   }),
                             ],
                             buttonAxis: Axis.horizontal,
@@ -185,6 +216,9 @@ class _LoginPageState extends State<LoginPage> {
                     },
                   ),
                 ],
+              ),
+              const SizedBox(
+                height: 16,
               ),
             ],
           ),
