@@ -60,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.of(context).pop(); // Close the loading dialog
       if (auth.currentUser?.uid != null) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => HomeTab()),
+          MaterialPageRoute(builder: (context) => HomePage()),
         );
       }
     } catch (e) {
