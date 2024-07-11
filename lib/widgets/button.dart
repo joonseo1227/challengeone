@@ -125,7 +125,7 @@ class SecondaryButton extends StatelessWidget {
     return BasicButton(
       text: text,
       textStyle: textStyle ?? const TextStyle(color: grey100, fontSize: 16),
-      borderColor: borderColor ?? grey30,
+      borderColor: borderColor ?? grey20,
       borderWidth: borderWidth ?? 1.0,
       backgroundColor: backgroundColor ?? white,
       isEnabled: isEnabled,

@@ -1,7 +1,7 @@
 import 'package:challengeone/config/color.dart';
 import 'package:challengeone/pages/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart'; // CupertinoTheme를 사용하기 위해 추가합니다.
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'firebase_options.dart';
