@@ -16,87 +16,94 @@ class _ProfileTabState extends State<ProfileTab> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: <Widget>[
-        Container(
-          margin: EdgeInsets.fromLTRB(16, 0, 16, 16),
-          child: Row(
-            children: [
-              ImageAvatar(
-                size: 96,
-                type: Shape.STORY,
-              ),
-              SizedBox(
-                width: 16,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    user?.displayName ?? '사용자 이름 없음',
-                    style: TextStyle(
-                      color: grey100,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          user?.displayName ?? '게스트',
+        ),
+      ),
+      body: ListView(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.fromLTRB(16, 0, 16, 16),
+            child: Row(
+              children: [
+                ImageAvatar(
+                  size: 96,
+                  type: Shape.STORY,
+                ),
+                SizedBox(
+                  width: 16,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      user?.displayName ?? '게스트',
+                      style: TextStyle(
+                        color: grey100,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                  Text(
-                    '레벨 10\n친구 5명',
-                    style: TextStyle(
-                      color: grey50,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
+                    Text(
+                      '레벨 10\n친구 5명',
+                      style: TextStyle(
+                        color: grey50,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-        ListTile(
-          title: Text('통계'),
-          subtitle: Text('15개 챌린지 성공'),
-        ),
-        const SizedBox(
-          height: 16,
-        ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-          child: SecondaryButton(
-            text: "로그아웃",
-            onTap: () async {
-              await FirebaseAuth.instance.signOut();
+          ListTile(
+            title: Text('통계'),
+            subtitle: Text('15개 챌린지 성공'),
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+            child: SecondaryButton(
+              text: "로그아웃",
+              onTap: () async {
+                await FirebaseAuth.instance.signOut();
 
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return DialogUI(
-                    title: '로그아웃',
-                    content: '정말 로그아웃할까요?',
-                    buttons: [
-                      DialogButtonData(
-                          text: '취소',
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          }),
-                      DialogButtonData(
-                          text: '로그아웃',
-                          onTap: () {
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (context) => LoginPage()),
-                                (route) => false);
-                          }),
-                    ],
-                    buttonAxis: Axis
-                        .horizontal, // Axis.horizontal for horizontal arrangement
-                  );
-                },
-              );
-            },
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return DialogUI(
+                      title: '로그아웃',
+                      content: '정말 로그아웃할까요?',
+                      buttons: [
+                        DialogButtonData(
+                            text: '취소',
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            }),
+                        DialogButtonData(
+                            text: '로그아웃',
+                            onTap: () {
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) => LoginPage()),
+                                  (route) => false);
+                            }),
+                      ],
+                      buttonAxis: Axis
+                          .horizontal, // Axis.horizontal for horizontal arrangement
+                    );
+                  },
+                );
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

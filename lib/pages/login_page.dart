@@ -1,6 +1,6 @@
 import 'package:challengeone/config/color.dart';
-import 'package:challengeone/pages/home_page.dart';
 import 'package:challengeone/pages/signup_page.dart';
+import 'package:challengeone/widgets//tabbar.dart';
 import 'package:challengeone/widgets/button.dart';
 import 'package:challengeone/widgets/dialog.dart';
 import 'package:challengeone/widgets/textfield.dart';
@@ -60,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.of(context).pop(); // Close the loading dialog
       if (auth.currentUser?.uid != null) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => MainPage()),
         );
       }
     } catch (e) {
@@ -118,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                           onTap: () {
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
-                                    builder: (context) => HomePage()),
+                                    builder: (context) => MainPage()),
                                 (route) => false);
                           }),
                     ],
