@@ -116,7 +116,7 @@ class _StoryPageState extends State<StoryPage> {
         ),
         StoryItem.text(
           title: "3-3",
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.black,
           textStyle: TextStyle(
             fontFamily: 'Dancing',
             fontSize: 40,
@@ -210,68 +210,73 @@ class _StoryPageState extends State<StoryPage> {
         ),
       );
     } else {
-      Navigator.pop(context);
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => MainPage()),
+          (route) => false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          GestureDetector(
-            onHorizontalDragEnd: (details) {
-              if (details.primaryVelocity != null) {
-                if (details.primaryVelocity! < 0) {
-                  _goToNextUser(); // 오른쪽에서 왼쪽으로 스와이프
-                } else if (details.primaryVelocity! > 0) {
-                  _goToPreviousUser(); // 왼쪽에서 오른쪽으로 스와이프
-                }
-              }
-            },
-            child: StoryView(
-              onVerticalSwipeComplete: (direction) {
-                if (direction == Direction.down) {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => MainPage()),
-                      (route) => false);
+      body: SafeArea(
+        child: Stack(
+          children: [
+            GestureDetector(
+              onHorizontalDragEnd: (details) {
+                if (details.primaryVelocity != null) {
+                  if (details.primaryVelocity! < 0) {
+                    _goToNextUser(); // 오른쪽에서 왼쪽으로 스와이프
+                  } else if (details.primaryVelocity! > 0) {
+                    _goToPreviousUser(); // 왼쪽에서 오른쪽으로 스와이프
+                  }
                 }
               },
-              storyItems: userStories[currentUserIndex],
-              onStoryShow: (storyItem, index) {
-                currentStoryIndex = index;
-              },
-              onComplete: () {
-                print("Completed a cycle");
-                _goToNextUser();
-              },
-              progressPosition: ProgressPosition.top,
-              repeat: false,
-              controller: storyController,
+              child: StoryView(
+                indicatorHeight: IndicatorHeight.small,
+                onVerticalSwipeComplete: (direction) {
+                  if (direction == Direction.down) {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => MainPage()),
+                        (route) => false);
+                  }
+                },
+                storyItems: userStories[currentUserIndex],
+                onStoryShow: (storyItem, index) {
+                  currentStoryIndex = index;
+                },
+                onComplete: () {
+                  print("Completed a cycle");
+                  _goToNextUser();
+                },
+                progressPosition: ProgressPosition.top,
+                repeat: false,
+                controller: storyController,
+              ),
             ),
-          ),
-          Positioned(
-            top: 64.0,
-            left: 16.0,
-            child: Row(
-              children: [
-                CircleAvatar(
-                  backgroundImage:
-                      NetworkImage(userInfo[currentUserIndex]["profileImage"]!),
-                ),
-                SizedBox(width: 10.0),
-                Text(
-                  userInfo[currentUserIndex]["name"]!,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
+            Positioned(
+              top: 24.0,
+              left: 16.0,
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(
+                        userInfo[currentUserIndex]["profileImage"]!),
                   ),
-                ),
-              ],
+                  SizedBox(width: 10.0),
+                  Text(
+                    userInfo[currentUserIndex]["name"]!,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.0,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
