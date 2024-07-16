@@ -59,6 +59,9 @@ class FriendsTab extends StatelessWidget {
             subtitle: Text('챌린지 3개 성공'),
             trailing: Icon(Icons.check_circle_outline),
           ),
+          SizedBox(
+            height: 16,
+          ),
         ],
       ),
     );

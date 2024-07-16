@@ -243,6 +243,9 @@ class _SignupPageState extends State<SignupPage> {
                   }
                 },
               ),
+              const SizedBox(
+                height: 16,
+              ),
             ],
           ),
         ),

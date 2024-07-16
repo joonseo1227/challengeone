@@ -1,4 +1,5 @@
 import 'package:challengeone/config/color.dart';
+import 'package:challengeone/pages/story_page.dart';
 import 'package:challengeone/widgets/imageavatar.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,15 @@ class Stories extends StatefulWidget {
 }
 
 class _StoriesState extends State<Stories> {
+  void _openStoryPage(int userIndex) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => StoryPage(userIndex: userIndex),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -20,11 +30,14 @@ class _StoriesState extends State<Stories> {
         children: [
           Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
-                child: ImageAvatar(
-                  size: 80,
-                  type: Shape.MYSTORY,
+              GestureDetector(
+                onTap: () => _openStoryPage(0),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
+                  child: ImageAvatar(
+                    size: 80,
+                    type: Shape.MYSTORY,
+                  ),
                 ),
               ),
               Text(
@@ -32,36 +45,39 @@ class _StoriesState extends State<Stories> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
-                  color: grey60,
+                  color: grey50,
                 ),
               ),
             ],
           ),
           ...List.generate(
             20,
-            (index) => SizedBox(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
-                    child: ImageAvatar(
-                      size: 80,
-                      type: Shape.STORY,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 64),
-                    child: Text(
-                      'user$index',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: grey80,
+            (index) => GestureDetector(
+              onTap: () => _openStoryPage(index + 1),
+              child: SizedBox(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
+                      child: ImageAvatar(
+                        size: 80,
+                        type: Shape.STORY,
                       ),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 64),
+                      child: Text(
+                        'user$index',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: grey80,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

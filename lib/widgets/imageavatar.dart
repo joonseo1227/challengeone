@@ -17,12 +17,16 @@ class ImageAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return switch (type) {
-      Shape.STORY => _storyAvatar(),
-      Shape.ON => _onAvatar(),
-      Shape.OFF => _offAvatar(),
-      Shape.MYSTORY => _myStoryAvatar(),
-    };
+    switch (type) {
+      case Shape.STORY:
+        return _storyAvatar(context);
+      case Shape.ON:
+        return _onAvatar();
+      case Shape.OFF:
+        return _offAvatar();
+      case Shape.MYSTORY:
+        return _myStoryAvatar(context);
+    }
   }
 
   Widget _basicAvatar() {
@@ -36,7 +40,7 @@ class ImageAvatar extends StatelessWidget {
     );
   }
 
-  Widget _storyAvatar() {
+  Widget _storyAvatar(BuildContext context) {
     return Container(
       height: size + 3,
       width: size + 3,
@@ -93,12 +97,12 @@ class ImageAvatar extends StatelessWidget {
     );
   }
 
-  Widget _myStoryAvatar() {
+  Widget _myStoryAvatar(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Stack(
         children: [
-          _storyAvatar(),
+          _storyAvatar(context),
           Positioned(
             // 위치 변경
             bottom: 0.5, //하단부

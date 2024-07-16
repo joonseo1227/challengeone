@@ -18,6 +18,9 @@ class NotificationsTab extends StatelessWidget {
             title: Text('새 친구 요청'),
             subtitle: Text('지훈 님이 회원님에게 친구 요청을 보냈어요.'),
           ),
+          const SizedBox(
+            height: 16,
+          ),
         ],
       ),
     );
