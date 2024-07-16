@@ -1,4 +1,5 @@
 import 'package:challengeone/config/color.dart';
+import 'package:challengeone/pages/add_story_page.dart';
 import 'package:flutter/material.dart';
 
 enum Shape { ON, OFF, STORY, MYSTORY }
@@ -107,24 +108,30 @@ class ImageAvatar extends StatelessWidget {
             // 위치 변경
             bottom: 0.5, //하단부
             right: 0.5, //우측
-            child: Container(
-              padding: const EdgeInsets.all(3),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: grey10,
-              ),
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => AddStoryPage()));
+              },
               child: Container(
-                width: 20,
-                height: 20,
-                padding: const EdgeInsets.all(2),
-                decoration: const BoxDecoration(
+                padding: const EdgeInsets.all(3),
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: blue50,
+                  color: grey10,
                 ),
-                child: const Icon(
-                  size: 16,
-                  Icons.add,
-                  color: Colors.white,
+                child: Container(
+                  width: 20,
+                  height: 20,
+                  padding: const EdgeInsets.all(2),
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: blue50,
+                  ),
+                  child: const Icon(
+                    size: 16,
+                    Icons.add,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
