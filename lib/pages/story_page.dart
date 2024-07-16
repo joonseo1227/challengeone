@@ -13,13 +13,13 @@ class StoryPage extends StatefulWidget {
 
 class _StoryPageState extends State<StoryPage> {
   late StoryController storyController;
+  late PageController pageController;
   late int currentUserIndex;
-  late int currentStoryIndex;
 
-  // 유저별 스토리 목록
+  // User story lists
   late List<List<StoryItem>> userStories;
 
-  // 유저 이름과 프로필 이미지 URL 목록
+  // User names and profile image URLs
   final List<Map<String, String>> userInfo = [
     {
       "name": "User 1",
@@ -47,10 +47,10 @@ class _StoryPageState extends State<StoryPage> {
   void initState() {
     super.initState();
     currentUserIndex = widget.userIndex;
-    currentStoryIndex = 0;
     storyController = StoryController();
+    pageController = PageController(initialPage: currentUserIndex);
 
-    // 스토리 초기화
+    // Initialize stories
     userStories = [
       [
         StoryItem.text(
@@ -151,6 +151,7 @@ class _StoryPageState extends State<StoryPage> {
   @override
   void dispose() {
     storyController.dispose();
+    pageController.dispose();
     super.dispose();
   }
 
@@ -161,51 +162,6 @@ class _StoryPageState extends State<StoryPage> {
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) {
             return StoryPage(userIndex: currentUserIndex + 1);
-          },
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            var tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-            var offsetAnimation = animation.drive(tween);
-
-            return SlideTransition(
-              position: offsetAnimation,
-              child: child,
-            );
-          },
-        ),
-      );
-    } else {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => MainPage()),
-          (route) => false);
-    }
-  }
-
-  void _goToPreviousUser() {
-    if (currentUserIndex > 0) {
-      Navigator.push(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) {
-            return StoryPage(userIndex: currentUserIndex - 1);
-          },
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            const begin = Offset(-1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-
-            var tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-            var offsetAnimation = animation.drive(tween);
-
-            return SlideTransition(
-              position: offsetAnimation,
-              child: child,
-            );
           },
         ),
       );
@@ -220,62 +176,61 @@ class _StoryPageState extends State<StoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Stack(
-          children: [
-            GestureDetector(
-              onHorizontalDragEnd: (details) {
-                if (details.primaryVelocity != null) {
-                  if (details.primaryVelocity! < 0) {
-                    _goToNextUser(); // 오른쪽에서 왼쪽으로 스와이프
-                  } else if (details.primaryVelocity! > 0) {
-                    _goToPreviousUser(); // 왼쪽에서 오른쪽으로 스와이프
-                  }
-                }
-              },
-              child: StoryView(
+        child: PageView.builder(
+          controller: pageController,
+          onPageChanged: (index) {
+            setState(() {
+              currentUserIndex = index;
+            });
+          },
+          itemCount: userStories.length,
+          itemBuilder: (context, index) {
+            return Stack(children: [
+              StoryView(
                 indicatorHeight: IndicatorHeight.small,
                 onVerticalSwipeComplete: (direction) {
                   if (direction == Direction.down) {
                     Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => MainPage()),
-                        (route) => false);
+                      MaterialPageRoute(builder: (context) => MainPage()),
+                      (route) => false,
+                    );
                   }
                 },
-                storyItems: userStories[currentUserIndex],
+                storyItems: userStories[index],
                 onStoryShow: (storyItem, index) {
-                  currentStoryIndex = index;
+                  // Handle story show
                 },
                 onComplete: () {
-                  print("Completed a cycle");
                   _goToNextUser();
                 },
                 progressPosition: ProgressPosition.top,
                 repeat: false,
                 controller: storyController,
               ),
-            ),
-            Positioned(
-              top: 24.0,
-              left: 16.0,
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        userInfo[currentUserIndex]["profileImage"]!),
-                  ),
-                  SizedBox(width: 10.0),
-                  Text(
-                    userInfo[currentUserIndex]["name"]!,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16.0,
+              Positioned(
+                top: 24.0,
+                left: 16.0,
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        userInfo[currentUserIndex]["profileImage"]!,
+                      ),
                     ),
-                  ),
-                ],
+                    SizedBox(width: 10.0),
+                    Text(
+                      userInfo[currentUserIndex]["name"]!,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ]);
+          },
         ),
       ),
     );
