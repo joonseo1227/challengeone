@@ -1,5 +1,7 @@
-import 'package:challengeone/config/color.dart';
+import 'package:challengeone/models/challenge.dart';
+import 'package:challengeone/providers/challenge_provider.dart';
 import 'package:challengeone/widgets/listtitle.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class MyChallenges extends StatefulWidget {
@@ -10,6 +12,9 @@ class MyChallenges extends StatefulWidget {
 }
 
 class _MyChallengesState extends State<MyChallenges> {
+  final FirebaseDB firebaseDB =
+      FirebaseDB(firebaseFirestore: FirebaseFirestore.instance);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -20,16 +25,36 @@ class _MyChallengesState extends State<MyChallenges> {
           title: '내 챌린지',
           subtitle: '오늘의 목표를 완료하고 보상을 받으세요',
         ),
-        ListTile(
-          title: Text('아침 달리기'),
-          subtitle: Text('30분 달리기'),
-          trailing: Icon(Icons.check_circle, color: green40),
-        ),
-        Divider(),
-        ListTile(
-          title: Text('독서'),
-          subtitle: Text('10페이지 읽기'),
-          trailing: Icon(Icons.check_circle_outline),
+        StreamBuilder<List<Challenge>>(
+          stream: firebaseDB.getChallenges(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('오류가 발생했습니다: ${snapshot.error}'));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Center(child: Text('챌린지가 없습니다.'));
+            } else {
+              return ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  final challenge = snapshot.data![index];
+                  return Column(
+                    children: [
+                      ListTile(
+                        title: Text(challenge.challengeName),
+                        subtitle: Text(challenge.challengeGoal),
+                        trailing: Icon(Icons.check_circle_outline),
+                      ),
+                      if (index != snapshot.data!.length - 1) Divider(),
+                    ],
+                  );
+                },
+              );
+            }
+          },
         ),
       ],
     );
