@@ -3,12 +3,12 @@ import 'package:challengeone/widgets/button.dart';
 import 'package:challengeone/widgets/textfield.dart';
 import 'package:flutter/material.dart';
 
-class AddStoryPage extends StatelessWidget {
+class AddChallengePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('새 스토리'),
+        title: Text('새 챌린지'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -17,13 +17,27 @@ class AddStoryPage extends StatelessWidget {
             children: [
               CustomTextField(
                 backgroundColor: white,
-                label: "스토리 캡션",
+                label: "챌린지 이름",
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              CustomTextField(
+                backgroundColor: white,
+                label: "챌린지 목표",
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              CustomTextField(
+                backgroundColor: white,
+                label: "챌린지 설명",
               ),
               const SizedBox(
                 height: 16,
               ),
               PrimaryButton(
-                text: "스토리 추가",
+                text: "챌린지 추가",
                 onTap: () {},
               ),
             ],

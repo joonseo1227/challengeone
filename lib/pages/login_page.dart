@@ -133,9 +133,9 @@ class _LoginPageState extends State<LoginPage> {
         ],
         backgroundColor: white,
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -216,9 +216,6 @@ class _LoginPageState extends State<LoginPage> {
                     },
                   ),
                 ],
-              ),
-              const SizedBox(
-                height: 16,
               ),
             ],
           ),

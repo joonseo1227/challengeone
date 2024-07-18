@@ -188,7 +188,7 @@ class _SignupPageState extends State<SignupPage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+          padding: EdgeInsets.all(16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -242,9 +242,6 @@ class _SignupPageState extends State<SignupPage> {
                     );
                   }
                 },
-              ),
-              const SizedBox(
-                height: 16,
               ),
             ],
           ),

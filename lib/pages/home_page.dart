@@ -12,7 +12,7 @@ class HomeTab extends StatelessWidget {
       body: ListView(
         children: <Widget>[
           Stories(),
-          BasicChallenges(),
+          MyChallenges(),
           SizedBox(
             height: 16,
           ),

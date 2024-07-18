@@ -2,14 +2,14 @@ import 'package:challengeone/config/color.dart';
 import 'package:challengeone/widgets/listtitle.dart';
 import 'package:flutter/material.dart';
 
-class BasicChallenges extends StatefulWidget {
-  const BasicChallenges({super.key});
+class MyChallenges extends StatefulWidget {
+  const MyChallenges({super.key});
 
   @override
-  State<BasicChallenges> createState() => _BasicChallengesState();
+  State<MyChallenges> createState() => _MyChallengesState();
 }
 
-class _BasicChallengesState extends State<BasicChallenges> {
+class _MyChallengesState extends State<MyChallenges> {
   @override
   Widget build(BuildContext context) {
     return Column(

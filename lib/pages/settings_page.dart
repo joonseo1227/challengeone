@@ -11,48 +11,47 @@ class SettingsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('설정'),
       ),
-      body: ListView(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-            child: SecondaryButton(
-              text: "로그아웃",
-              onTap: () async {
-                await FirebaseAuth.instance.signOut();
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            children: [
+              SecondaryButton(
+                text: "로그아웃",
+                onTap: () async {
+                  await FirebaseAuth.instance.signOut();
 
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return DialogUI(
-                      title: '로그아웃',
-                      content: '정말 로그아웃할까요?',
-                      buttons: [
-                        DialogButtonData(
-                            text: '취소',
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            }),
-                        DialogButtonData(
-                            text: '로그아웃',
-                            onTap: () {
-                              Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                      builder: (context) => LoginPage()),
-                                  (route) => false);
-                            }),
-                      ],
-                      buttonAxis: Axis
-                          .horizontal, // Axis.horizontal for horizontal arrangement
-                    );
-                  },
-                );
-              },
-            ),
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return DialogUI(
+                        title: '로그아웃',
+                        content: '정말 로그아웃할까요?',
+                        buttons: [
+                          DialogButtonData(
+                              text: '취소',
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              }),
+                          DialogButtonData(
+                              text: '로그아웃',
+                              onTap: () {
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) => LoginPage()),
+                                    (route) => false);
+                              }),
+                        ],
+                        buttonAxis: Axis
+                            .horizontal, // Axis.horizontal for horizontal arrangement
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
           ),
-          SizedBox(
-            height: 16,
-          ),
-        ],
+        ),
       ),
     );
   }

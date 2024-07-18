@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 
 class CustomTextField extends StatefulWidget {
   final String label;
-  final String? hint; // 힌트를 선택 사항으로 변경
+  final String? hint;
   final String? errorText;
   final TextEditingController? controller;
   final bool obscureText;
   final TextInputType keyboardType;
+  final Color? backgroundColor; // 백그라운드 컬러 추가
 
   const CustomTextField({
     Key? key,
@@ -17,6 +18,7 @@ class CustomTextField extends StatefulWidget {
     this.controller,
     this.obscureText = false,
     this.keyboardType = TextInputType.text,
+    this.backgroundColor, // 백그라운드 컬러 초기화
   }) : super(key: key);
 
   @override
@@ -76,7 +78,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 color: grey40,
               ),
               filled: true,
-              fillColor: grey10,
+              fillColor: widget.backgroundColor ?? grey10, // 백그라운드 컬러 적용
               enabledBorder: UnderlineInputBorder(
                 borderRadius: BorderRadius.circular(0),
                 borderSide: BorderSide(

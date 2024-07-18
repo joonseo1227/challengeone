@@ -12,7 +12,7 @@ class ChallengeTab extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
-          BasicChallenges(),
+          MyChallenges(),
           SizedBox(
             height: 16,
           ),
