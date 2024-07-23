@@ -1,8 +1,8 @@
 import 'package:challengeone/config/color.dart';
 import 'package:challengeone/pages/signup_page.dart';
-import 'package:challengeone/widgets//tabbar.dart';
 import 'package:challengeone/widgets/button.dart';
 import 'package:challengeone/widgets/dialog.dart';
+import 'package:challengeone/widgets/tabbar.dart';
 import 'package:challengeone/widgets/textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
