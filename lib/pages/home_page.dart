@@ -17,9 +17,12 @@ class _HomeTabState extends State<HomeTab> {
       body: ListView(
         children: <Widget>[
           Stories(),
+          SizedBox(
+            height: 80,
+          ),
           MyChallenges(),
           SizedBox(
-            height: 16,
+            height: 80,
           ),
           AllChallenges(),
           SizedBox(

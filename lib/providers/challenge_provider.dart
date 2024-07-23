@@ -1,9 +1,9 @@
 import 'package:challengeone/models/challenge.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class FirebaseDB {
+class ChallengeProvider {
   final FirebaseFirestore firebaseFirestore;
-  FirebaseDB({
+  ChallengeProvider({
     required this.firebaseFirestore,
   });
 

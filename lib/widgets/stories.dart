@@ -65,15 +65,12 @@ class _StoriesState extends State<Stories> {
                         type: Shape.STORY,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 64),
-                      child: Text(
-                        'user$index',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: grey80,
-                        ),
+                    Text(
+                      'user$index',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: grey80,
                       ),
                     ),
                   ],

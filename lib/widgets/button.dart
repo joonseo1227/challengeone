@@ -87,7 +87,11 @@ class PrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BasicButton(
       text: text,
-      textStyle: textStyle ?? const TextStyle(color: white, fontSize: 16),
+      textStyle: textStyle ??
+          const TextStyle(
+            color: white,
+            fontSize: 16,
+          ),
       borderColor: borderColor ?? Colors.transparent,
       borderWidth: borderWidth ?? 0,
       backgroundColor: backgroundColor ?? blue50,
@@ -124,7 +128,11 @@ class SecondaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BasicButton(
       text: text,
-      textStyle: textStyle ?? const TextStyle(color: grey100, fontSize: 16),
+      textStyle: textStyle ??
+          const TextStyle(
+            color: grey100,
+            fontSize: 16,
+          ),
       borderColor: borderColor ?? grey20,
       borderWidth: borderWidth ?? 1.0,
       backgroundColor: backgroundColor ?? white,
@@ -161,7 +169,12 @@ class GhostButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BasicButton(
       text: text,
-      textStyle: textStyle ?? const TextStyle(color: blue50, fontSize: 16),
+      textStyle: textStyle ??
+          const TextStyle(
+            color: blue50,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
       borderColor: borderColor ?? Colors.transparent,
       borderWidth: borderWidth ?? 0.0,
       backgroundColor: backgroundColor ?? Colors.transparent,

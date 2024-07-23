@@ -200,11 +200,11 @@ class _LoginPageState extends State<LoginPage> {
                         context: context,
                         builder: (BuildContext context) {
                           return DialogUI(
-                            title: '암호를 잊었다',
-                            content: '자랑이다',
+                            title: '지원되지 않는 기능',
+                            content: '아직 지원되지 않는 기능이에요.',
                             buttons: [
                               DialogButtonData(
-                                  text: '닫기',
+                                  text: '확인',
                                   onTap: () {
                                     Navigator.of(context).pop();
                                   }),

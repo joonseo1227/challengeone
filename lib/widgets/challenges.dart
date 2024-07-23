@@ -16,8 +16,8 @@ class MyChallenges extends StatefulWidget {
 }
 
 class _MyChallengesState extends State<MyChallenges> {
-  final FirebaseDB firebaseDB =
-      FirebaseDB(firebaseFirestore: FirebaseFirestore.instance);
+  final ChallengeProvider firebaseDB =
+      ChallengeProvider(firebaseFirestore: FirebaseFirestore.instance);
 
   @override
   Widget build(BuildContext context) {
@@ -25,28 +25,32 @@ class _MyChallengesState extends State<MyChallenges> {
 
     if (user == null) {
       return Center(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(16, 0, 16, 32),
-          child: Column(
-            children: [
-              Text(
-                '내 챌린지를 확인하려면 로그인하세요',
-                style: TextStyle(
-                  color: grey60,
-                  fontSize: 16,
+        child: Column(
+          children: [
+            Text(
+              '내 챌린지를 확인하려면 로그인하세요',
+              style: TextStyle(
+                color: grey60,
+                fontSize: 16,
+              ),
+            ),
+            Container(
+              child: Container(
+                child: Container(
+                  width: 80,
+                  child: GhostButton(
+                    text: "로그인",
+                    onTap: () {
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => LoginPage()),
+                        (route) => false,
+                      );
+                    },
+                  ),
                 ),
               ),
-              GhostButton(
-                text: "로그인",
-                onTap: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => LoginPage()),
-                    (route) => false,
-                  );
-                },
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     }
@@ -70,7 +74,7 @@ class _MyChallengesState extends State<MyChallenges> {
                   '오류가 발생했어요: ${snapshot.error}',
                   style: TextStyle(
                     color: grey60,
-                    fontSize: 20,
+                    fontSize: 16,
                   ),
                 ),
               );
@@ -80,7 +84,7 @@ class _MyChallengesState extends State<MyChallenges> {
                   '챌린지가 없어요',
                   style: TextStyle(
                     color: grey60,
-                    fontSize: 20,
+                    fontSize: 16,
                   ),
                 ),
               );
@@ -119,8 +123,8 @@ class AllChallenges extends StatefulWidget {
 }
 
 class _AllChallengesState extends State<AllChallenges> {
-  final FirebaseDB firebaseDB =
-      FirebaseDB(firebaseFirestore: FirebaseFirestore.instance);
+  final ChallengeProvider firebaseDB =
+      ChallengeProvider(firebaseFirestore: FirebaseFirestore.instance);
 
   @override
   Widget build(BuildContext context) {
