@@ -21,6 +21,10 @@ class _HomeTabState extends State<HomeTab> {
           SizedBox(
             height: 16,
           ),
+          AllChallenges(),
+          SizedBox(
+            height: 16,
+          ),
         ],
       ),
     );

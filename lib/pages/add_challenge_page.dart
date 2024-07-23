@@ -75,8 +75,8 @@ class _AddChallengePageState extends State<AddChallengePage> {
                       'challengeName': _challengeNameController.text,
                       'uid': 'guest',
                     });
-                    Navigator.of(context).pop();
                   }
+                  Navigator.of(context).pop();
                 },
               ),
             ],
