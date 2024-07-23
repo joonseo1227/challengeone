@@ -1,7 +1,7 @@
 import 'package:challengeone/pages/challenge_page.dart';
-import 'package:challengeone/pages/friends_page.dart';
 import 'package:challengeone/pages/home_page.dart';
 import 'package:challengeone/pages/notifications_page.dart';
+import 'package:challengeone/pages/people_page.dart';
 import 'package:challengeone/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +16,7 @@ class _MainPageState extends State<MainPage> {
   static List<Widget> _widgetOptions = <Widget>[
     HomeTab(),
     ChallengeTab(),
-    FriendsTab(),
+    PeopleTab(),
     NotificationsTab(),
     ProfileTab(),
   ];
@@ -44,7 +44,7 @@ class _MainPageState extends State<MainPage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.group),
-            label: '친구',
+            label: '사람들',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),

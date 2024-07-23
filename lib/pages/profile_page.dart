@@ -1,5 +1,6 @@
 import 'package:challengeone/config/color.dart';
 import 'package:challengeone/pages/add_challenge_page.dart';
+import 'package:challengeone/pages/people_page.dart';
 import 'package:challengeone/pages/settings_page.dart';
 import 'package:challengeone/widgets/challenges.dart';
 import 'package:challengeone/widgets/imageavatar.dart';
@@ -35,21 +36,18 @@ class _ProfileTabState extends State<ProfileTab> {
       body: ListView(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+            padding: EdgeInsets.fromLTRB(16, 16, 0, 16),
             child: Row(
               children: [
                 ImageAvatar(
                   size: 96,
                   type: Shape.STORY,
                 ),
-                SizedBox(
-                  width: 16,
-                ),
+                Spacer(),
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      user?.displayName ?? '게스트',
+                      '15',
                       style: TextStyle(
                         color: grey100,
                         fontSize: 20,
@@ -57,7 +55,7 @@ class _ProfileTabState extends State<ProfileTab> {
                       ),
                     ),
                     Text(
-                      '레벨 10\n친구 5명',
+                      '레벨',
                       style: TextStyle(
                         color: grey50,
                         fontSize: 16,
@@ -66,6 +64,61 @@ class _ProfileTabState extends State<ProfileTab> {
                     ),
                   ],
                 ),
+                Spacer(),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => PeopleTab(initialIndex: 0)));
+                  },
+                  child: Column(
+                    children: [
+                      Text(
+                        '5',
+                        style: TextStyle(
+                          color: grey100,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        '팔로워',
+                        style: TextStyle(
+                          color: grey50,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Spacer(),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => PeopleTab(initialIndex: 1)));
+                  },
+                  child: Column(
+                    children: [
+                      Text(
+                        '5',
+                        style: TextStyle(
+                          color: grey100,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        '팔로잉',
+                        style: TextStyle(
+                          color: grey50,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Spacer(),
               ],
             ),
           ),

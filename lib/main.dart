@@ -54,6 +54,27 @@ void main() async {
           space: 0,
           thickness: 1,
         ),
+        tabBarTheme: const TabBarTheme(
+          overlayColor: WidgetStatePropertyAll(
+            grey20,
+          ),
+          indicatorColor: grey100,
+          dividerColor: grey20,
+          indicatorSize: TabBarIndicatorSize.tab,
+          indicator: UnderlineTabIndicator(
+            borderSide: BorderSide(
+              width: 2,
+            ),
+          ),
+          unselectedLabelStyle: TextStyle(
+            color: grey50,
+            fontWeight: FontWeight.w600,
+          ),
+          labelStyle: TextStyle(
+            color: grey100,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: grey10,
           elevation: 0,

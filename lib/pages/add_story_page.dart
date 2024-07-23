@@ -22,12 +22,32 @@ class _AddStoryPageState extends State<AddStoryPage> {
   File? _imageFile;
 
   Future<void> _pickImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        _imageFile = File(pickedFile.path);
-      });
+    try {
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        setState(() {
+          _imageFile = File(pickedFile.path);
+        });
+      }
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return DialogUI(
+            title: '이미지 선택 오류',
+            content: '$e',
+            buttons: [
+              DialogButtonData(
+                  text: '확인',
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  }),
+            ],
+            buttonAxis: Axis.horizontal,
+          );
+        },
+      );
     }
   }
 
