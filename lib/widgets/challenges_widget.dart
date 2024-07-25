@@ -2,8 +2,8 @@ import 'package:challengeone/config/color.dart';
 import 'package:challengeone/models/challenge.dart';
 import 'package:challengeone/pages/login_page.dart';
 import 'package:challengeone/providers/challenge_provider.dart';
-import 'package:challengeone/widgets/button.dart';
-import 'package:challengeone/widgets/listtitle.dart';
+import 'package:challengeone/widgets/button_widget.dart';
+import 'package:challengeone/widgets/listtitle_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +67,9 @@ class _MyChallengesState extends State<MyChallenges> {
           stream: firebaseDB.getChallenges(user.uid),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             } else if (snapshot.hasError) {
               return Center(
                 child: Text(

@@ -1,4 +1,4 @@
-import 'package:challengeone/widgets/challenges.dart';
+import 'package:challengeone/widgets/challenges_widget.dart';
 import 'package:flutter/material.dart';
 
 class ChallengeTab extends StatelessWidget {

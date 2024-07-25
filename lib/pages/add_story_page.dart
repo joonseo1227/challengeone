@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:challengeone/config/color.dart';
-import 'package:challengeone/widgets/button.dart';
-import 'package:challengeone/widgets/dialog.dart';
-import 'package:challengeone/widgets/textfield.dart';
+import 'package:challengeone/widgets/button_widget.dart';
+import 'package:challengeone/widgets/dialog_widget.dart';
+import 'package:challengeone/widgets/textfield_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -113,7 +113,7 @@ class _AddStoryPageState extends State<AddStoryPage> {
               const SizedBox(
                 height: 16,
               ),
-              PrimaryButton(
+              SecondaryButton(
                 text: "이미지 선택",
                 onTap: _pickImage,
               ),

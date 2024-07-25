@@ -1,13 +1,15 @@
 import 'package:challengeone/config/color.dart';
 import 'package:challengeone/pages/signup_page.dart';
-import 'package:challengeone/widgets/button.dart';
-import 'package:challengeone/widgets/dialog.dart';
-import 'package:challengeone/widgets/tabbar.dart';
-import 'package:challengeone/widgets/textfield.dart';
+import 'package:challengeone/widgets/button_widget.dart';
+import 'package:challengeone/widgets/dialog_widget.dart';
+import 'package:challengeone/widgets/tabbar_widget.dart';
+import 'package:challengeone/widgets/textfield_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 final auth = FirebaseAuth.instance;
+final firestore = FirebaseFirestore.instance;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -56,9 +58,18 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     try {
-      await auth.signInWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+          email: email, password: password);
       Navigator.of(context).pop(); // Close the loading dialog
-      if (auth.currentUser?.uid != null) {
+      User? user = userCredential.user;
+      if (user != null) {
+        // Firestore에 사용자 정보 저장
+        await firestore.collection('user').doc(user.uid).set({
+          'uid': user.uid,
+          'name': user.displayName,
+          'profileImage': '프로필 이미지 URL', // 실제 프로필 이미지 URL로 대체
+        });
+
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => MainPage()),
         );

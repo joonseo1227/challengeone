@@ -2,8 +2,9 @@ import 'package:challengeone/config/color.dart';
 import 'package:challengeone/pages/add_challenge_page.dart';
 import 'package:challengeone/pages/people_page.dart';
 import 'package:challengeone/pages/settings_page.dart';
-import 'package:challengeone/widgets/challenges.dart';
-import 'package:challengeone/widgets/imageavatar.dart';
+import 'package:challengeone/pages/story_page.dart';
+import 'package:challengeone/widgets/challenges_widget.dart';
+import 'package:challengeone/widgets/imageavatar_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -39,9 +40,22 @@ class _ProfileTabState extends State<ProfileTab> {
             padding: EdgeInsets.fromLTRB(16, 16, 0, 16),
             child: Row(
               children: [
-                ImageAvatar(
-                  size: 96,
-                  type: Shape.STORY,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => StoryPage(uid: user!.uid),
+                      ),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
+                    child: ImageAvatar(
+                      size: 96,
+                      type: Shape.MYSTORY,
+                    ),
+                  ),
                 ),
                 Spacer(),
                 Column(
