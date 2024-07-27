@@ -80,7 +80,7 @@ class _PeopleSearchPageState extends State<PeopleSearchPage> {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => ProfileTab(uid: user['id']),
+                  builder: (context) => ProfileTab(uid: user['uid']),
                 ),
               );
             },
