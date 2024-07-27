@@ -39,7 +39,8 @@ class _ProfileTabState extends State<ProfileTab> {
     super.initState();
     _loadProfile();
     _checkIfFollowing();
-    _fetchCounts();
+    _setupFollowersListener();
+    _setupFollowingListener();
     _loadData();
   }
 
@@ -73,22 +74,29 @@ class _ProfileTabState extends State<ProfileTab> {
     );
   }
 
-  Future<void> _fetchCounts() async {
-    // 기존 currentUser.uid를 widget.uid로 변경
-    var followersSnapshot = await FirebaseFirestore.instance
+  void _setupFollowersListener() {
+    firestore
         .collection('following')
         .doc(widget.uid)
         .collection('userFollowers')
-        .get();
-    var followingSnapshot = await FirebaseFirestore.instance
+        .snapshots()
+        .listen((snapshot) {
+      setState(() {
+        followersCount = snapshot.size;
+      });
+    });
+  }
+
+  void _setupFollowingListener() {
+    firestore
         .collection('following')
         .doc(widget.uid)
         .collection('userfollowing')
-        .get();
-
-    setState(() {
-      followersCount = followersSnapshot.size;
-      followingCount = followingSnapshot.size;
+        .snapshots()
+        .listen((snapshot) {
+      setState(() {
+        followingCount = snapshot.size;
+      });
     });
   }
 
@@ -139,7 +147,6 @@ class _ProfileTabState extends State<ProfileTab> {
 
     setState(() {
       isFollowing = true;
-      followersCount++; // 팔로워 수 증가
       isLoading = false;
     });
   }
@@ -167,7 +174,6 @@ class _ProfileTabState extends State<ProfileTab> {
 
     setState(() {
       isFollowing = false;
-      followersCount--; // 팔로워 수 감소
       isLoading = false;
     });
   }

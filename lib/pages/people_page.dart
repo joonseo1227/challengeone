@@ -141,7 +141,15 @@ class _PeopleTabState extends State<PeopleTab> with TickerProviderStateMixin {
           return const Center(child: CircularProgressIndicator());
         }
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return const Center(child: Text('팔로워가 없어요'));
+          return const Center(
+            child: Text(
+              '팔로워가 없어요',
+              style: TextStyle(
+                color: grey60,
+                fontSize: 16,
+              ),
+            ),
+          );
         }
         return ListView.separated(
           itemCount: snapshot.data!.docs.length,
@@ -168,7 +176,15 @@ class _PeopleTabState extends State<PeopleTab> with TickerProviderStateMixin {
           return const Center(child: CircularProgressIndicator());
         }
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return const Center(child: Text('팔로잉이 없어요'));
+          return const Center(
+            child: Text(
+              '팔로잉이 없어요',
+              style: TextStyle(
+                color: grey60,
+                fontSize: 16,
+              ),
+            ),
+          );
         }
         return ListView.separated(
           itemCount: snapshot.data!.docs.length,
@@ -189,7 +205,15 @@ class _PeopleTabState extends State<PeopleTab> with TickerProviderStateMixin {
           FirebaseFirestore.instance.collection('user').doc(uid).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const ListTile(title: Text('로딩 중...'));
+          return const ListTile(
+            title: Text(
+              '로딩 중...',
+              style: TextStyle(
+                color: grey60,
+                fontSize: 16,
+              ),
+            ),
+          );
         }
         var user = snapshot.data!;
         return ListTile(
