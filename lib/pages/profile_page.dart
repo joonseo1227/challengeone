@@ -3,10 +3,12 @@ import 'package:challengeone/pages/add_challenge_page.dart';
 import 'package:challengeone/pages/people_page.dart';
 import 'package:challengeone/pages/settings_page.dart';
 import 'package:challengeone/pages/story_page.dart';
+import 'package:challengeone/providers/story_provider.dart';
 import 'package:challengeone/widgets/button_widget.dart';
 import 'package:challengeone/widgets/challenges_widget.dart';
 import 'package:challengeone/widgets/imageavatar_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dismissible_page/dismissible_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +22,7 @@ class ProfileTab extends StatefulWidget {
 }
 
 class _ProfileTabState extends State<ProfileTab> {
-  final User? user = FirebaseAuth.instance.currentUser;
+  late User? currentUser;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
   bool isFollowing = false;
@@ -28,25 +30,59 @@ class _ProfileTabState extends State<ProfileTab> {
   DocumentSnapshot? userProfile;
   int followersCount = 0;
   int followingCount = 0;
+  List<Map<String, String>> userInfo = [];
 
   @override
   void initState() {
+    currentUser = FirebaseAuth.instance.currentUser;
+
     super.initState();
     _loadProfile();
     _checkIfFollowing();
     _fetchCounts();
+    _loadData();
+  }
+
+  // Firestore에서 사용자 정보를 비동기로 가져오는 함수
+  Future<void> _loadData() async {
+    StoryProvider storyProvider =
+        StoryProvider(firebaseFirestore: FirebaseFirestore.instance);
+
+    List<Map<String, String>> fetchedUserInfo =
+        await storyProvider.getUserInfo();
+
+    setState(() {
+      userInfo = fetchedUserInfo;
+      isLoading = false;
+    });
+  }
+
+  // 현재 로그인한 유저의 UID 인덱스를 찾는 함수
+  int _findMyIndex(String uid) {
+    return userInfo.indexWhere((user) => user['uid'] == uid);
+  }
+
+  // 스토리 페이지를 열 때 uid를 사용
+  void _openStoryPage(int select) {
+    final uidList = userInfo.map((user) => user['uid'] ?? 'guest').toList();
+
+    context.pushTransparentRoute(
+      StoryPage(uidList: uidList, initIndex: select),
+      transitionDuration: const Duration(milliseconds: 100),
+      reverseTransitionDuration: const Duration(milliseconds: 100),
+    );
   }
 
   Future<void> _fetchCounts() async {
-    if (user != null) {
+    if (currentUser != null) {
       var followersSnapshot = await FirebaseFirestore.instance
           .collection('following')
-          .doc(user!.uid)
+          .doc(currentUser!.uid)
           .collection('userFollowers')
           .get();
       var followingSnapshot = await FirebaseFirestore.instance
           .collection('following')
-          .doc(user!.uid)
+          .doc(currentUser!.uid)
           .collection('userfollowing')
           .get();
 
@@ -160,24 +196,31 @@ class _ProfileTabState extends State<ProfileTab> {
             padding: const EdgeInsets.fromLTRB(16, 16, 0, 16),
             child: Row(
               children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const StoryPage(initIndex: -1),
+                if (widget.uid == auth.currentUser?.uid)
+                  GestureDetector(
+                    onTap: () => _openStoryPage(_findMyIndex(currentUser!.uid)),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
+                      child: ImageAvatar(
+                        imageUrl: userProfile?['profileImage'] ?? 'url',
+                        size: 96,
+                        type: Shape.MYSTORY,
                       ),
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
-                    child: ImageAvatar(
-                      imageUrl: userProfile?['profileImage'] ?? 'url',
-                      size: 96,
-                      type: Shape.MYSTORY,
+                    ),
+                  )
+                else
+                  GestureDetector(
+                    onTap: () =>
+                        _openStoryPage(_findMyIndex(userProfile?['uid'])),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
+                      child: ImageAvatar(
+                        imageUrl: userProfile?['profileImage'] ?? 'url',
+                        size: 96,
+                        type: Shape.STORY,
+                      ),
                     ),
                   ),
-                ),
                 const Spacer(),
                 const Column(
                   children: [
@@ -288,17 +331,20 @@ class _ProfileTabState extends State<ProfileTab> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => AddChallengePage()));
-        },
-        backgroundColor: blue50,
-        shape: const CircleBorder(),
-        elevation: 0,
-        child: const Icon(
-          Icons.add,
-          color: white,
+      floatingActionButton: Visibility(
+        visible: widget.uid == auth.currentUser?.uid,
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => AddChallengePage()));
+          },
+          backgroundColor: blue50,
+          shape: const CircleBorder(),
+          elevation: 0,
+          child: const Icon(
+            Icons.add,
+            color: white,
+          ),
         ),
       ),
     );
