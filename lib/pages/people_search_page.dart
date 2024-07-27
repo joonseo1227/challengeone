@@ -69,7 +69,9 @@ class _PeopleSearchPageState extends State<PeopleSearchPage> {
         itemCount: _searchResults.length,
         itemBuilder: (context, index) {
           var user = _searchResults[index];
-          return ListTile(
+
+          // ListTile을 반환하는 위젯
+          Widget listTile = ListTile(
             leading: CircleAvatar(
               backgroundImage:
                   NetworkImage(user['profileImage']), // 프로필 이미지 URL 사용
@@ -78,11 +80,23 @@ class _PeopleSearchPageState extends State<PeopleSearchPage> {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => ProfileTab(uid: user.id),
+                  builder: (context) => ProfileTab(uid: user['id']),
                 ),
               );
             },
           );
+
+          // 마지막 항목이 아니면 Divider를 추가
+          if (index < _searchResults.length - 1) {
+            return Column(
+              children: [
+                listTile,
+                const Divider(), // 항목 사이에 Divider 추가
+              ],
+            );
+          } else {
+            return listTile; // 마지막 항목에는 Divider 추가하지 않음
+          }
         },
       );
     }
