@@ -8,9 +8,11 @@ import 'package:story_view/story_view.dart';
 final auth = FirebaseAuth.instance;
 
 class StoryPage extends StatefulWidget {
-  final String uid;
+  final List<String>? uidList;
+  final int initIndex;
 
-  const StoryPage({Key? key, required this.uid}) : super(key: key);
+  const StoryPage({Key? key, this.uidList, required this.initIndex})
+      : super(key: key);
 
   @override
   _StoryPageState createState() => _StoryPageState();
@@ -21,11 +23,13 @@ class _StoryPageState extends State<StoryPage> {
   late PageController pageController;
   late User? currentUser;
 
+  late int currentIndex;
+
   // 사용자 스토리 리스트
-  List<List<StoryItem>> userStories = [];
+  List<StoryItem> userStories = [];
 
   // 사용자 이름과 프로필 이미지 URL 리스트
-  List<Map<String, String>> userInfo = [];
+  Map<String, String> userInfo = {};
 
   @override
   void initState() {
@@ -33,6 +37,8 @@ class _StoryPageState extends State<StoryPage> {
     currentUser = FirebaseAuth.instance.currentUser;
     storyController = StoryController();
     pageController = PageController();
+
+    currentIndex = widget.initIndex;
 
     // Firestore에서 데이터 가져오기
     _loadUserInfo();
@@ -43,20 +49,17 @@ class _StoryPageState extends State<StoryPage> {
     StoryProvider storyProvider =
         StoryProvider(firebaseFirestore: FirebaseFirestore.instance);
 
-    List<Map<String, String>> fetchedUserInfo =
-        await storyProvider.getUserInfo();
+    if (widget.uidList != null) {
+      userInfo =
+          await storyProvider.getUserInfoByUid(widget.uidList![currentIndex]);
+      userStories = await storyProvider
+          .getUserStoriesByUid(widget.uidList![currentIndex]);
+    } else {
+      userInfo = await storyProvider.getUserInfoByUid(currentUser!.uid);
+      userStories = await storyProvider.getUserStoriesByUid(currentUser!.uid);
+    }
 
-    setState(() {
-      userInfo = fetchedUserInfo;
-    });
-
-    // 사용자 스토리 로드
-    List<List<StoryItem>> fetchedUserStories =
-        await storyProvider.getUserStories();
-
-    setState(() {
-      userStories = fetchedUserStories;
-    });
+    setState(() {});
   }
 
   @override
@@ -94,12 +97,16 @@ class _StoryPageState extends State<StoryPage> {
               : PageView.builder(
                   controller: pageController,
                   itemCount: userInfo.length,
+                  onPageChanged: (index) {
+                    currentIndex = index;
+                    _loadUserInfo();
+                  },
                   itemBuilder: (context, index) {
                     return Stack(
                       children: [
                         StoryView(
                           indicatorHeight: IndicatorHeight.small,
-                          storyItems: userStories[index],
+                          storyItems: userStories,
                           onComplete: _goToNextUser,
                           progressPosition: ProgressPosition.top,
                           repeat: false,
@@ -112,12 +119,12 @@ class _StoryPageState extends State<StoryPage> {
                             children: [
                               CircleAvatar(
                                 backgroundImage: NetworkImage(
-                                  userInfo[index]["profileImage"]!,
+                                  userInfo["profileImage"]!,
                                 ),
                               ),
                               SizedBox(width: 10.0),
                               Text(
-                                userInfo[index]["name"]!,
+                                userInfo["name"]!,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,

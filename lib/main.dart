@@ -14,6 +14,7 @@ void main() async {
 
   runApp(
     MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: "Pretendard",
         scaffoldBackgroundColor: grey10,

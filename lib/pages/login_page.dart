@@ -61,14 +61,17 @@ class _LoginPageState extends State<LoginPage> {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
           email: email, password: password);
       Navigator.of(context).pop(); // Close the loading dialog
+
       User? user = userCredential.user;
+
       if (user != null) {
         // Firestore에 사용자 정보 저장
+        /*
         await firestore.collection('user').doc(user.uid).set({
           'uid': user.uid,
           'name': user.displayName,
           'profileImage': '프로필 이미지 URL', // 실제 프로필 이미지 URL로 대체
-        });
+        });*/
 
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => MainPage()),

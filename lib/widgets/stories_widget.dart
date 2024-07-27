@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 final auth = FirebaseAuth.instance;
+final firestore = FirebaseFirestore.instance;
 
 class Stories extends StatefulWidget {
   const Stories({super.key});
@@ -33,19 +34,32 @@ class _StoriesState extends State<Stories> {
   Future<void> _loadData() async {
     StoryProvider storyProvider =
         StoryProvider(firebaseFirestore: FirebaseFirestore.instance);
+
     List<Map<String, String>> fetchedUserInfo =
         await storyProvider.getUserInfo();
 
     setState(() {
       userInfo = fetchedUserInfo;
       isLoading = false;
+
+      if (currentUser != null) {
+        int myIndex = _findMyIndex(currentUser!.uid);
+        print('My UID index: $myIndex');
+      }
     });
   }
 
+  // 현재 로그인한 유저의 UID 인덱스를 찾는 함수
+  int _findMyIndex(String uid) {
+    return userInfo.indexWhere((user) => user['uid'] == uid);
+  }
+
   // 스토리 페이지를 열 때 uid를 사용
-  void _openStoryPage(String uid) {
+  void _openStoryPage(int select) {
+    final uidList = userInfo.map((user) => user['uid'] ?? 'guest').toList();
+
     context.pushTransparentRoute(
-      StoryPage(uid: uid),
+      StoryPage(uidList: uidList, initIndex: select),
       transitionDuration: Duration(milliseconds: 100),
       reverseTransitionDuration: Duration(milliseconds: 100),
     );
@@ -68,10 +82,13 @@ class _StoriesState extends State<Stories> {
           Column(
             children: [
               GestureDetector(
-                onTap: () => _openStoryPage(currentUser!.uid), // 내 uid로 설정
+                onTap: () =>
+                    _openStoryPage(_findMyIndex(currentUser!.uid)), // 내 uid로 설정
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
                   child: ImageAvatar(
+                    imageUrl: userInfo[_findMyIndex(currentUser!.uid)]
+                        ['profileImage'],
                     size: 80,
                     type: Shape.MYSTORY,
                   ),
@@ -87,10 +104,13 @@ class _StoriesState extends State<Stories> {
               ),
             ],
           ),
-          ...List.generate(
-            userInfo.length,
-            (index) => GestureDetector(
-              onTap: () => _openStoryPage(userInfo[index]['uid']!), // uid 사용
+          // 현재 사용자를 제외한 다른 사용자들만 출력
+          ...userInfo
+              .where((user) => user['uid'] != currentUser!.uid)
+              .map((user) {
+            int index = userInfo.indexOf(user);
+            return GestureDetector(
+              onTap: () => _openStoryPage(index), // uid 사용
               child: SizedBox(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -99,12 +119,12 @@ class _StoriesState extends State<Stories> {
                       padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
                       child: ImageAvatar(
                         size: 80,
-                        imageUrl: userInfo[index]['profileImage'],
+                        imageUrl: user['profileImage'],
                         type: Shape.STORY,
                       ),
                     ),
                     Text(
-                      userInfo[index]['name'] ?? 'user$index',
+                      user['name'] ?? 'user$index',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 14,
@@ -114,8 +134,8 @@ class _StoriesState extends State<Stories> {
                   ],
                 ),
               ),
-            ),
-          ),
+            );
+          }).toList(),
         ],
       ),
     );

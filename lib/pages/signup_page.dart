@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:challengeone/config/color.dart';
 import 'package:challengeone/pages/login_page.dart';
 import 'package:challengeone/widgets/button_widget.dart';
 import 'package:challengeone/widgets/dialog_widget.dart';
 import 'package:challengeone/widgets/textfield_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 final auth = FirebaseAuth.instance;
 
@@ -26,6 +31,40 @@ class _SignupPageState extends State<SignupPage> {
   String? _emailError;
   String? _passwordError;
   String? _confirmPasswordError;
+
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseStorage storage = FirebaseStorage.instance;
+  File? _imageFile;
+
+  Future<void> _pickImage() async {
+    try {
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        setState(() {
+          _imageFile = File(pickedFile.path);
+        });
+      }
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return DialogUI(
+            title: '이미지 선택 오류',
+            content: '$e',
+            buttons: [
+              DialogButtonData(
+                  text: '확인',
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  }),
+            ],
+            buttonAxis: Axis.horizontal,
+          );
+        },
+      );
+    }
+  }
 
   @override
   void initState() {
@@ -117,6 +156,65 @@ class _SignupPageState extends State<SignupPage> {
       );
       await result.user?.updateDisplayName(username);
 
+      if (_imageFile == null) {
+        try {
+          await firestore.collection('user').doc(auth.currentUser?.uid).set({
+            'uid': auth.currentUser?.uid,
+            'name': auth.currentUser?.displayName,
+            'profileImage': 'imageUrl',
+          });
+        } catch (e) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return DialogUI(
+                title: '회원 가입 오류',
+                content: '$e',
+                buttons: [
+                  DialogButtonData(
+                      text: '확인',
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      }),
+                ],
+                buttonAxis: Axis.horizontal,
+              );
+            },
+          );
+        }
+      } else {
+        try {
+          final storageRef = storage.ref().child(
+              'profileImage/${DateTime.now().millisecondsSinceEpoch}.jpg');
+          await storageRef.putFile(_imageFile!);
+          final imageUrl = await storageRef.getDownloadURL();
+
+          await firestore.collection('user').doc(auth.currentUser?.uid).set({
+            'uid': auth.currentUser?.uid,
+            'name': auth.currentUser?.displayName,
+            'profileImage': imageUrl,
+          });
+        } catch (e) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return DialogUI(
+                title: '회원 가입 오류',
+                content: '$e',
+                buttons: [
+                  DialogButtonData(
+                      text: '확인',
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      }),
+                ],
+                buttonAxis: Axis.horizontal,
+              );
+            },
+          );
+        }
+      }
+
       Navigator.of(context).pop(); // Dismiss the loading indicator
 
       showDialog(
@@ -193,6 +291,14 @@ class _SignupPageState extends State<SignupPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SecondaryButton(
+                text: "프로필 이미지 추가",
+                onTap: _pickImage,
+              ),
+              if (_imageFile != null) Image.file(_imageFile!, height: 200),
+              const SizedBox(
+                height: 16,
+              ),
               CustomTextField(
                 label: '이름',
                 hint: '홍길동',

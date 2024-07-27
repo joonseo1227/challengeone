@@ -3,8 +3,11 @@ import 'package:challengeone/pages/add_challenge_page.dart';
 import 'package:challengeone/pages/people_page.dart';
 import 'package:challengeone/pages/settings_page.dart';
 import 'package:challengeone/pages/story_page.dart';
+import 'package:challengeone/providers/story_provider.dart';
 import 'package:challengeone/widgets/challenges_widget.dart';
 import 'package:challengeone/widgets/imageavatar_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dismissible_page/dismissible_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -14,14 +17,48 @@ class ProfileTab extends StatefulWidget {
 }
 
 class _ProfileTabState extends State<ProfileTab> {
-  final User? user = FirebaseAuth.instance.currentUser;
+  late User? currentUser;
+  bool isLoading = true;
+  List<Map<String, String>> userInfo = [];
+
+  @override
+  void initState() {
+    currentUser = FirebaseAuth.instance.currentUser;
+
+    super.initState();
+    _loadData();
+  }
+
+  // Firestore에서 사용자 정보를 비동기로 가져오는 함수
+  Future<void> _loadData() async {
+    StoryProvider storyProvider =
+        StoryProvider(firebaseFirestore: FirebaseFirestore.instance);
+
+    List<Map<String, String>> fetchedUserInfo =
+        await storyProvider.getUserInfo();
+
+    setState(() {
+      userInfo = fetchedUserInfo;
+      isLoading = false;
+
+      if (currentUser != null) {
+        int myIndex = _findMyIndex(currentUser!.uid);
+        print('My UID index: $myIndex');
+      }
+    });
+  }
+
+  // 현재 로그인한 유저의 UID 인덱스를 찾는 함수
+  int _findMyIndex(String uid) {
+    return userInfo.indexWhere((user) => user['uid'] == uid);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          user?.displayName ?? '게스트',
+          currentUser?.displayName ?? '게스트',
         ),
         actions: [
           IconButton(
@@ -42,16 +79,17 @@ class _ProfileTabState extends State<ProfileTab> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => StoryPage(uid: user!.uid),
-                      ),
+                    context.pushTransparentRoute(
+                      StoryPage(initIndex: -1),
+                      transitionDuration: Duration(milliseconds: 100),
+                      reverseTransitionDuration: Duration(milliseconds: 100),
                     );
                   },
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
                     child: ImageAvatar(
+                      imageUrl: userInfo[_findMyIndex(currentUser!.uid)]
+                          ['profileImage'],
                       size: 96,
                       type: Shape.MYSTORY,
                     ),
