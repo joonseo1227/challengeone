@@ -1,6 +1,5 @@
 import 'package:challengeone/config/color.dart';
 import 'package:challengeone/pages/story_page.dart';
-import 'package:challengeone/providers/story_provider.dart';
 import 'package:challengeone/widgets/imageavatar_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dismissible_page/dismissible_page.dart';
@@ -25,23 +24,7 @@ class _StoriesState extends State<Stories> {
   @override
   void initState() {
     currentUser = FirebaseAuth.instance.currentUser;
-
     super.initState();
-    _loadData();
-  }
-
-  // Firestore에서 사용자 정보를 비동기로 가져오는 함수
-  Future<void> _loadData() async {
-    StoryProvider storyProvider =
-        StoryProvider(firebaseFirestore: FirebaseFirestore.instance);
-
-    List<Map<String, String>> fetchedUserInfo =
-        await storyProvider.getUserInfo();
-
-    setState(() {
-      userInfo = fetchedUserInfo;
-      isLoading = false;
-    });
   }
 
   // 현재 로그인한 유저의 UID 인덱스를 찾는 함수
@@ -62,77 +45,91 @@ class _StoriesState extends State<Stories> {
 
   @override
   Widget build(BuildContext context) {
-    if (isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
+    return StreamBuilder<QuerySnapshot>(
+      stream: firestore.collection('user').snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return const Center(child: Text('Something went wrong'));
+        }
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
+        userInfo = snapshot.data!.docs.map((doc) {
+          return {
+            "name": doc['name'] as String,
+            "profileImage": doc['profileImage'] as String,
+            "uid": doc['uid'] as String,
+          };
+        }).toList();
+
+        return SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GestureDetector(
-                onTap: () =>
-                    _openStoryPage(_findMyIndex(currentUser!.uid)), // 내 uid로 설정
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
-                  child: ImageAvatar(
-                    imageUrl: userInfo[_findMyIndex(currentUser!.uid)]
-                        ['profileImage'],
-                    size: 80,
-                    type: Shape.MYSTORY,
-                  ),
-                ),
-              ),
-              const Text(
-                '내 스토리',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: grey50,
-                ),
-              ),
-            ],
-          ),
-          // 현재 사용자를 제외한 다른 사용자들만 출력
-          ...userInfo
-              .where((user) => user['uid'] != currentUser!.uid)
-              .map((user) {
-            int index = userInfo.indexOf(user);
-            return GestureDetector(
-              onTap: () => _openStoryPage(index), // uid 사용
-              child: SizedBox(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
+              Column(
+                children: [
+                  GestureDetector(
+                    onTap: () => _openStoryPage(
+                        _findMyIndex(currentUser!.uid)), // 내 uid로 설정
+                    child: Padding(
                       padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
                       child: ImageAvatar(
+                        imageUrl: userInfo[_findMyIndex(currentUser!.uid)]
+                            ['profileImage'],
                         size: 80,
-                        imageUrl: user['profileImage'],
-                        type: Shape.STORY,
+                        type: Shape.MYSTORY,
                       ),
                     ),
-                    Text(
-                      user['name'] ?? 'user$index',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: grey80,
-                      ),
+                  ),
+                  const Text(
+                    '내 스토리',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: grey50,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            );
-          }),
-        ],
-      ),
+              // 현재 사용자를 제외한 다른 사용자들만 출력
+              ...userInfo
+                  .where((user) => user['uid'] != currentUser!.uid)
+                  .map((user) {
+                int index = userInfo.indexOf(user);
+                return GestureDetector(
+                  onTap: () => _openStoryPage(index), // uid 사용
+                  child: SizedBox(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
+                          child: ImageAvatar(
+                            size: 80,
+                            imageUrl: user['profileImage'],
+                            type: Shape.STORY,
+                          ),
+                        ),
+                        Text(
+                          user['name'] ?? 'user$index',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: grey80,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }),
+            ],
+          ),
+        );
+      },
     );
   }
 }

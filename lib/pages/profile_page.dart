@@ -74,28 +74,29 @@ class _ProfileTabState extends State<ProfileTab> {
   }
 
   Future<void> _fetchCounts() async {
-    if (currentUser != null) {
-      var followersSnapshot = await FirebaseFirestore.instance
-          .collection('following')
-          .doc(currentUser!.uid)
-          .collection('userFollowers')
-          .get();
-      var followingSnapshot = await FirebaseFirestore.instance
-          .collection('following')
-          .doc(currentUser!.uid)
-          .collection('userfollowing')
-          .get();
+    // 기존 currentUser.uid를 widget.uid로 변경
+    var followersSnapshot = await FirebaseFirestore.instance
+        .collection('following')
+        .doc(widget.uid)
+        .collection('userFollowers')
+        .get();
+    var followingSnapshot = await FirebaseFirestore.instance
+        .collection('following')
+        .doc(widget.uid)
+        .collection('userfollowing')
+        .get();
 
-      setState(() {
-        followersCount = followersSnapshot.size;
-        followingCount = followingSnapshot.size;
-        isLoading = false;
-      });
-    }
+    setState(() {
+      followersCount = followersSnapshot.size;
+      followingCount = followingSnapshot.size;
+    });
   }
 
   Future<void> _loadProfile() async {
-    var userDoc = await firestore.collection('user').doc(widget.uid).get();
+    var userDoc = await firestore
+        .collection('user')
+        .doc(widget.uid)
+        .get(); // 현재 프로필의 사용자 UID로 접근
     setState(() {
       userProfile = userDoc;
       isLoading = false;
@@ -103,63 +104,72 @@ class _ProfileTabState extends State<ProfileTab> {
   }
 
   Future<void> _checkIfFollowing() async {
-    var followDoc = await firestore
+    var currentUid = auth.currentUser!.uid;
+    var doc = await firestore
         .collection('following')
-        .doc(auth.currentUser?.uid)
+        .doc(currentUid)
         .collection('userfollowing')
         .doc(widget.uid)
-        .get();
+        .get(); // 현재 프로필의 사용자 UID로 접근
     setState(() {
-      isFollowing = followDoc.exists;
+      isFollowing = doc.exists;
     });
   }
 
   Future<void> _followUser() async {
-    try {
-      await firestore
-          .collection('following')
-          .doc(auth.currentUser?.uid)
-          .collection('userfollowing')
-          .doc(widget.uid)
-          .set({
-        'uid': widget.uid,
-      });
-      await firestore
-          .collection('following')
-          .doc(widget.uid)
-          .collection('userFollowers')
-          .doc(auth.currentUser?.uid)
-          .set({
-        'uid': auth.currentUser?.uid,
-      });
-      setState(() {
-        isFollowing = true;
-      });
-    } catch (e) {
-      print(e);
-    }
+    var currentUid = auth.currentUser!.uid;
+
+    setState(() {
+      isLoading = true;
+    });
+
+    await firestore
+        .collection('following')
+        .doc(currentUid)
+        .collection('userfollowing')
+        .doc(widget.uid)
+        .set({}); // 현재 프로필의 사용자 UID로 팔로우 추가
+
+    await firestore
+        .collection('following')
+        .doc(widget.uid)
+        .collection('userFollowers')
+        .doc(currentUid)
+        .set({}); // 현재 프로필의 사용자 UID로 팔로워 추가
+
+    setState(() {
+      isFollowing = true;
+      followersCount++; // 팔로워 수 증가
+      isLoading = false;
+    });
   }
 
   Future<void> _unfollowUser() async {
-    try {
-      await firestore
-          .collection('following')
-          .doc(auth.currentUser?.uid)
-          .collection('userfollowing')
-          .doc(widget.uid)
-          .delete();
-      await firestore
-          .collection('following')
-          .doc(widget.uid)
-          .collection('userFollowers')
-          .doc(auth.currentUser?.uid)
-          .delete();
-      setState(() {
-        isFollowing = false;
-      });
-    } catch (e) {
-      print(e);
-    }
+    var currentUid = auth.currentUser!.uid;
+
+    setState(() {
+      isLoading = true;
+    });
+
+    await firestore
+        .collection('following')
+        .doc(currentUid)
+        .collection('userfollowing')
+        .doc(widget.uid)
+        .delete(); // 현재 프로필의 사용자 UID로 팔로잉 제거
+
+    await firestore
+        .collection('following')
+        .doc(widget.uid)
+        .collection('userFollowers')
+        .doc(currentUid)
+        .delete(); // 현재 프로필의 사용자 UID로 팔로워 제거
+
+    setState(() {
+      isFollowing = false;
+      followersCount--; // 팔로워 수 감소
+      isLoading = false;
+    });
   }
 
   @override
@@ -167,7 +177,7 @@ class _ProfileTabState extends State<ProfileTab> {
     if (isLoading) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text('프로필'),
+          title: const Text('프로필 로드 중...'),
         ),
         body: const Center(
           child: CircularProgressIndicator(),
@@ -177,7 +187,7 @@ class _ProfileTabState extends State<ProfileTab> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(userProfile?['name'] ?? '프로필'),
+        title: Text(userProfile != null ? userProfile!['name'] : '프로필'),
         actions: [
           if (widget.uid == auth.currentUser?.uid)
             IconButton(
@@ -202,7 +212,9 @@ class _ProfileTabState extends State<ProfileTab> {
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
                       child: ImageAvatar(
-                        imageUrl: userProfile?['profileImage'] ?? 'url',
+                        imageUrl: userProfile != null
+                            ? userProfile!['profileImage']
+                            : '',
                         size: 96,
                         type: Shape.MYSTORY,
                       ),
@@ -243,7 +255,6 @@ class _ProfileTabState extends State<ProfileTab> {
                   ],
                 ),
                 const Spacer(),
-                // 팔로워와 팔로잉 텍스트 클릭 시 전달하는 uid를 widget.uid로 수정합니다.
                 InkWell(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
@@ -299,7 +310,6 @@ class _ProfileTabState extends State<ProfileTab> {
                     ],
                   ),
                 ),
-
                 const Spacer(),
               ],
             ),
@@ -327,7 +337,7 @@ class _ProfileTabState extends State<ProfileTab> {
           ),
           UserChallenges(uid: widget.uid),
           const SizedBox(
-            height: 16,
+            height: 32,
           ),
         ],
       ),
