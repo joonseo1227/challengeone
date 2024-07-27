@@ -41,7 +41,7 @@ class ImageAvatar extends StatelessWidget {
         radius: size / 2,
         backgroundImage: imageUrl != null
             ? NetworkImage(imageUrl!) // 이미지 URL을 사용하는 경우
-            : AssetImage('assets/images/user1.png')
+            : const AssetImage('assets/images/user1.png')
                 as ImageProvider, // 기본 아이콘을 사용하는 경우
       ),
     );
@@ -124,7 +124,7 @@ class ImageAvatar extends StatelessWidget {
               },
               child: Container(
                 padding: const EdgeInsets.all(3),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                   color: grey10,
                 ),

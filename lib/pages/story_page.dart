@@ -72,7 +72,7 @@ class _StoryPageState extends State<StoryPage> {
   void _goToNextUser() {
     if (pageController.page!.toInt() < userInfo.length - 1) {
       pageController.nextPage(
-        duration: Duration(milliseconds: 100),
+        duration: const Duration(milliseconds: 100),
         curve: Curves.easeIn,
       );
     } else {
@@ -91,7 +91,7 @@ class _StoryPageState extends State<StoryPage> {
             Navigator.of(context).pop();
           },
           child: userInfo.isEmpty || userStories.isEmpty
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(),
                 )
               : PageView.builder(
@@ -122,10 +122,10 @@ class _StoryPageState extends State<StoryPage> {
                                   userInfo["profileImage"]!,
                                 ),
                               ),
-                              SizedBox(width: 10.0),
+                              const SizedBox(width: 10.0),
                               Text(
                                 userInfo["name"]!,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16.0,

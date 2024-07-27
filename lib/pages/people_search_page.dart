@@ -57,11 +57,11 @@ class _PeopleSearchPageState extends State<PeopleSearchPage> {
 
   Widget _buildSearchResults() {
     if (_noResultsFound) {
-      return Center(
+      return const Center(
         child: Text('검색 결과가 없습니다.'),
       );
     } else if (_searchResults.isEmpty) {
-      return Center(
+      return const Center(
         child: Text('검색어를 입력하세요.'),
       );
     } else {

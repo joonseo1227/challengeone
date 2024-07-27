@@ -8,10 +8,10 @@ class ChallengeTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('챌린지'),
+        title: const Text('챌린지'),
       ),
       body: ListView(
-        children: <Widget>[
+        children: const <Widget>[
           AllChallenges(),
           SizedBox(
             height: 16,

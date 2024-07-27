@@ -41,11 +41,6 @@ class _StoriesState extends State<Stories> {
     setState(() {
       userInfo = fetchedUserInfo;
       isLoading = false;
-
-      if (currentUser != null) {
-        int myIndex = _findMyIndex(currentUser!.uid);
-        print('My UID index: $myIndex');
-      }
     });
   }
 
@@ -60,21 +55,21 @@ class _StoriesState extends State<Stories> {
 
     context.pushTransparentRoute(
       StoryPage(uidList: uidList, initIndex: select),
-      transitionDuration: Duration(milliseconds: 100),
-      reverseTransitionDuration: Duration(milliseconds: 100),
+      transitionDuration: const Duration(milliseconds: 100),
+      reverseTransitionDuration: const Duration(milliseconds: 100),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return Center(
+      return const Center(
         child: CircularProgressIndicator(),
       );
     }
 
     return SingleChildScrollView(
-      padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
       scrollDirection: Axis.horizontal,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,7 +89,7 @@ class _StoriesState extends State<Stories> {
                   ),
                 ),
               ),
-              Text(
+              const Text(
                 '내 스토리',
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -126,7 +121,7 @@ class _StoriesState extends State<Stories> {
                     Text(
                       user['name'] ?? 'user$index',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         color: grey80,
                       ),
@@ -135,7 +130,7 @@ class _StoriesState extends State<Stories> {
                 ),
               ),
             );
-          }).toList(),
+          }),
         ],
       ),
     );

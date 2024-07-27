@@ -65,14 +65,6 @@ class _LoginPageState extends State<LoginPage> {
       User? user = userCredential.user;
 
       if (user != null) {
-        // Firestore에 사용자 정보 저장
-        /*
-        await firestore.collection('user').doc(user.uid).set({
-          'uid': user.uid,
-          'name': user.displayName,
-          'profileImage': '프로필 이미지 URL', // 실제 프로필 이미지 URL로 대체
-        });*/
-
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => MainPage()),
         );
@@ -112,44 +104,11 @@ class _LoginPageState extends State<LoginPage> {
         title: const Text(
           "로그인",
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return DialogUI(
-                    title: '게스트 모드',
-                    content: '로그인 없이 탐색할 수 있어요. 게스트 모드를 시작할까요?',
-                    buttons: [
-                      DialogButtonData(
-                          text: '취소',
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          }),
-                      DialogButtonData(
-                          text: '시작',
-                          onTap: () {
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (context) => MainPage()),
-                                (route) => false);
-                          }),
-                    ],
-                    buttonAxis: Axis.horizontal,
-                  );
-                },
-              );
-            },
-            icon: Icon(Icons.close),
-            color: grey100,
-          ),
-        ],
         backgroundColor: white,
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -203,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
                     text: "회원 가입",
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => SignupPage()));
+                          builder: (context) => const SignupPage()));
                     },
                   ),
                   const Spacer(),

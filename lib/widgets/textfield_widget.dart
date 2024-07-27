@@ -57,15 +57,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
       children: [
         Text(
           widget.label,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 14,
             color: grey100,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 4,
         ),
-        Container(
+        SizedBox(
           height: 48,
           child: TextField(
             controller: widget.controller,
@@ -74,7 +74,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             keyboardType: widget.keyboardType,
             decoration: InputDecoration(
               hintText: widget.hint,
-              hintStyle: TextStyle(
+              hintStyle: const TextStyle(
                 color: grey40,
               ),
               filled: true,
@@ -95,7 +95,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               ),
               suffixIcon: widget.controller?.text.isNotEmpty ?? false
                   ? IconButton(
-                      icon: Icon(Icons.clear),
+                      icon: const Icon(Icons.clear),
                       onPressed: () {
                         widget.controller?.clear();
                       },
@@ -107,12 +107,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
         if (widget.errorText != null && widget.errorText!.isNotEmpty)
           Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 4,
               ),
               Text(
                 widget.errorText!,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: red60,
@@ -179,14 +179,14 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 48,
       child: TextField(
         controller: widget.controller,
         focusNode: _focusNode,
         decoration: InputDecoration(
           hintText: widget.hint,
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
             color: grey40,
           ),
           filled: true,
@@ -208,7 +208,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
           prefixIcon: Icon(Icons.search, color: _hasFocus ? blue50 : grey60),
           suffixIcon: widget.controller?.text.isNotEmpty ?? false
               ? IconButton(
-                  icon: Icon(Icons.clear),
+                  icon: const Icon(Icons.clear),
                   onPressed: () {
                     widget.controller?.clear();
                   },

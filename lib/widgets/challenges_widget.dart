@@ -27,27 +27,23 @@ class _MyChallengesState extends State<MyChallenges> {
       return Center(
         child: Column(
           children: [
-            Text(
+            const Text(
               '내 챌린지를 확인하려면 로그인하세요',
               style: TextStyle(
                 color: grey60,
                 fontSize: 16,
               ),
             ),
-            Container(
-              child: Container(
-                child: Container(
-                  width: 80,
-                  child: GhostButton(
-                    text: "로그인",
-                    onTap: () {
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => LoginPage()),
-                        (route) => false,
-                      );
-                    },
-                  ),
-                ),
+            SizedBox(
+              width: 80,
+              child: GhostButton(
+                text: "로그인",
+                onTap: () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
+                    (route) => false,
+                  );
+                },
               ),
             ),
           ],
@@ -74,14 +70,14 @@ class _MyChallengesState extends State<MyChallenges> {
               return Center(
                 child: Text(
                   '오류가 발생했어요: ${snapshot.error}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: grey60,
                     fontSize: 16,
                   ),
                 ),
               );
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(
+              return const Center(
                 child: Text(
                   '챌린지가 없어요',
                   style: TextStyle(
@@ -93,7 +89,7 @@ class _MyChallengesState extends State<MyChallenges> {
             } else {
               return ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   final challenge = snapshot.data![index];
@@ -102,9 +98,9 @@ class _MyChallengesState extends State<MyChallenges> {
                       ListTile(
                         title: Text(challenge.challengeName),
                         subtitle: Text(challenge.challengeGoal),
-                        trailing: Icon(Icons.check_circle_outline),
+                        trailing: const Icon(Icons.check_circle_outline),
                       ),
-                      if (index != snapshot.data!.length - 1) Divider(),
+                      if (index != snapshot.data!.length - 1) const Divider(),
                     ],
                   );
                 },
@@ -142,19 +138,19 @@ class _AllChallengesState extends State<AllChallenges> {
           stream: firebaseDB.getAllChallenges(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Center(
                 child: Text(
                   '오류가 발생했어요: ${snapshot.error}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: grey60,
                     fontSize: 16,
                   ),
                 ),
               );
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(
+              return const Center(
                 child: Text(
                   '챌린지가 없어요',
                   style: TextStyle(
@@ -166,7 +162,7 @@ class _AllChallengesState extends State<AllChallenges> {
             } else {
               return ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   final challenge = snapshot.data![index];
@@ -175,9 +171,9 @@ class _AllChallengesState extends State<AllChallenges> {
                       ListTile(
                         title: Text(challenge.challengeName),
                         subtitle: Text(challenge.challengeGoal),
-                        trailing: Icon(Icons.check_circle_outline),
+                        trailing: const Icon(Icons.check_circle_outline),
                       ),
-                      if (index != snapshot.data!.length - 1) Divider(),
+                      if (index != snapshot.data!.length - 1) const Divider(),
                     ],
                   );
                 },

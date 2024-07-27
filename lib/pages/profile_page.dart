@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 class ProfileTab extends StatefulWidget {
   final String uid;
 
-  ProfileTab({required this.uid});
+  const ProfileTab({required this.uid});
 
   @override
   State<ProfileTab> createState() => _ProfileTabState();
@@ -131,9 +131,9 @@ class _ProfileTabState extends State<ProfileTab> {
     if (isLoading) {
       return Scaffold(
         appBar: AppBar(
-          title: Text('프로필'),
+          title: const Text('프로필'),
         ),
-        body: Center(
+        body: const Center(
           child: CircularProgressIndicator(),
         ),
       );
@@ -149,7 +149,7 @@ class _ProfileTabState extends State<ProfileTab> {
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => SettingsPage()));
               },
-              icon: Icon(Icons.settings),
+              icon: const Icon(Icons.settings),
               color: grey100,
             ),
         ],
@@ -157,7 +157,7 @@ class _ProfileTabState extends State<ProfileTab> {
       body: ListView(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.fromLTRB(16, 16, 0, 16),
+            padding: const EdgeInsets.fromLTRB(16, 16, 0, 16),
             child: Row(
               children: [
                 GestureDetector(
@@ -178,8 +178,8 @@ class _ProfileTabState extends State<ProfileTab> {
                     ),
                   ),
                 ),
-                Spacer(),
-                Column(
+                const Spacer(),
+                const Column(
                   children: [
                     Text(
                       '15',
@@ -199,23 +199,25 @@ class _ProfileTabState extends State<ProfileTab> {
                     ),
                   ],
                 ),
-                Spacer(),
+                const Spacer(),
+                // 팔로워와 팔로잉 텍스트 클릭 시 전달하는 uid를 widget.uid로 수정합니다.
                 InkWell(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => PeopleTab(initialIndex: 0)));
+                        builder: (context) =>
+                            PeopleTab(initialIndex: 0, uid: widget.uid)));
                   },
                   child: Column(
                     children: [
                       Text(
                         '$followersCount',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: grey100,
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      Text(
+                      const Text(
                         '팔로워',
                         style: TextStyle(
                           color: grey50,
@@ -226,23 +228,24 @@ class _ProfileTabState extends State<ProfileTab> {
                     ],
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 InkWell(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => PeopleTab(initialIndex: 1)));
+                        builder: (context) =>
+                            PeopleTab(initialIndex: 1, uid: widget.uid)));
                   },
                   child: Column(
                     children: [
                       Text(
                         '$followingCount',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: grey100,
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      Text(
+                      const Text(
                         '팔로잉',
                         style: TextStyle(
                           color: grey50,
@@ -253,13 +256,14 @@ class _ProfileTabState extends State<ProfileTab> {
                     ],
                   ),
                 ),
-                Spacer(),
+
+                const Spacer(),
               ],
             ),
           ),
           if (widget.uid != auth.currentUser?.uid)
             Padding(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
                   if (isFollowing)
@@ -278,8 +282,8 @@ class _ProfileTabState extends State<ProfileTab> {
           const SizedBox(
             height: 32,
           ),
-          MyChallenges(),
-          SizedBox(
+          const MyChallenges(),
+          const SizedBox(
             height: 16,
           ),
         ],
@@ -290,9 +294,9 @@ class _ProfileTabState extends State<ProfileTab> {
               MaterialPageRoute(builder: (context) => AddChallengePage()));
         },
         backgroundColor: blue50,
-        shape: CircleBorder(),
+        shape: const CircleBorder(),
         elevation: 0,
-        child: Icon(
+        child: const Icon(
           Icons.add,
           color: white,
         ),

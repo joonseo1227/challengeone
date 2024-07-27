@@ -144,7 +144,7 @@ class _SignupPageState extends State<SignupPage> {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         },
@@ -228,7 +228,7 @@ class _SignupPageState extends State<SignupPage> {
                 text: '확인',
                 onTap: () {
                   Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => LoginPage()),
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
                     (route) => false,
                   );
                 },
@@ -281,12 +281,12 @@ class _SignupPageState extends State<SignupPage> {
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
-        title: Text("회원 가입"),
+        title: const Text("회원 가입"),
         backgroundColor: white,
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,

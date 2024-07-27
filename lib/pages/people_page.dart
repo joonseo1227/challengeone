@@ -1,25 +1,24 @@
-import 'package:challengeone/config/color.dart';
-import 'package:challengeone/pages/people_search_page.dart';
 import 'package:challengeone/pages/profile_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class PeopleTab extends StatefulWidget {
   final int initialIndex;
+  final String uid; // 유저 ID 추가
 
-  PeopleTab({this.initialIndex = 0}); // 기본값은 0으로 설정
+  const PeopleTab(
+      {this.initialIndex = 0, required this.uid}); // 기본값은 0으로 설정하고 uid 필수로 받음
 
   @override
   State<PeopleTab> createState() => _PeopleTabState();
 }
 
 class _PeopleTabState extends State<PeopleTab> with TickerProviderStateMixin {
-  final User? user = FirebaseAuth.instance.currentUser;
   late TabController tabController;
   int followersCount = 0;
   int followingCount = 0;
   bool isLoading = true;
+  String userName = ''; // 유저 이름을 저장할 변수 추가
 
   @override
   void initState() {
@@ -30,27 +29,36 @@ class _PeopleTabState extends State<PeopleTab> with TickerProviderStateMixin {
       initialIndex: widget.initialIndex,
     );
     _fetchCounts();
+    _fetchUserName(); // 유저 이름을 불러오는 메서드 호출
   }
 
   Future<void> _fetchCounts() async {
-    if (user != null) {
-      var followersSnapshot = await FirebaseFirestore.instance
-          .collection('following')
-          .doc(user!.uid)
-          .collection('userFollowers')
-          .get();
-      var followingSnapshot = await FirebaseFirestore.instance
-          .collection('following')
-          .doc(user!.uid)
-          .collection('userfollowing')
-          .get();
+    var followersSnapshot = await FirebaseFirestore.instance
+        .collection('following')
+        .doc(widget.uid)
+        .collection('userFollowers')
+        .get();
+    var followingSnapshot = await FirebaseFirestore.instance
+        .collection('following')
+        .doc(widget.uid)
+        .collection('userfollowing')
+        .get();
 
-      setState(() {
-        followersCount = followersSnapshot.size;
-        followingCount = followingSnapshot.size;
-        isLoading = false;
-      });
-    }
+    setState(() {
+      followersCount = followersSnapshot.size;
+      followingCount = followingSnapshot.size;
+      isLoading = false;
+    });
+  }
+
+  Future<void> _fetchUserName() async {
+    var userDoc = await FirebaseFirestore.instance
+        .collection('user')
+        .doc(widget.uid)
+        .get();
+    setState(() {
+      userName = userDoc['name']; // 유저 이름 설정
+    });
   }
 
   @override
@@ -64,9 +72,9 @@ class _PeopleTabState extends State<PeopleTab> with TickerProviderStateMixin {
     if (isLoading) {
       return Scaffold(
         appBar: AppBar(
-          title: Text(user?.displayName ?? '게스트'),
+          title: const Text('로드 중...'),
         ),
-        body: Center(
+        body: const Center(
           child: CircularProgressIndicator(),
         ),
       );
@@ -76,17 +84,7 @@ class _PeopleTabState extends State<PeopleTab> with TickerProviderStateMixin {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(user?.displayName ?? '게스트'),
-          actions: [
-            IconButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => PeopleSearchPage()));
-              },
-              icon: Icon(Icons.search),
-              color: grey100,
-            )
-          ],
+          title: Text(userName), // 유저 이름 표시
           bottom: TabBar(
             controller: tabController,
             tabs: [
@@ -114,15 +112,15 @@ class _PeopleTabState extends State<PeopleTab> with TickerProviderStateMixin {
     return FutureBuilder<QuerySnapshot>(
       future: FirebaseFirestore.instance
           .collection('following')
-          .doc(user!.uid)
+          .doc(widget.uid)
           .collection('userFollowers')
           .get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return Center(child: Text('팔로워가 없어요'));
+          return const Center(child: Text('팔로워가 없어요'));
         }
         return ListView(
           children: snapshot.data!.docs.map((doc) {
@@ -137,15 +135,15 @@ class _PeopleTabState extends State<PeopleTab> with TickerProviderStateMixin {
     return FutureBuilder<QuerySnapshot>(
       future: FirebaseFirestore.instance
           .collection('following')
-          .doc(user!.uid)
+          .doc(widget.uid)
           .collection('userfollowing')
           .get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return Center(child: Text('팔로잉이 없어요'));
+          return const Center(child: Text('팔로잉이 없어요'));
         }
         return ListView(
           children: snapshot.data!.docs.map((doc) {
@@ -161,7 +159,7 @@ class _PeopleTabState extends State<PeopleTab> with TickerProviderStateMixin {
       future: FirebaseFirestore.instance.collection('user').doc(uid).get(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return ListTile(title: Text('로딩 중...'));
+          return const ListTile(title: Text('로딩 중...'));
         }
         var user = snapshot.data!;
         return ListTile(

@@ -39,7 +39,7 @@ class StoryProvider {
           url: story.storyImageUrl,
           caption: Text(
             story.storyCaption,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 24,
               color: white,
             ),
@@ -92,7 +92,7 @@ class StoryProvider {
             url: story.storyImageUrl,
             caption: Text(
               story.storyCaption,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 24,
                 color: white,
               ),

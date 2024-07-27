@@ -12,7 +12,7 @@ class _HomeTabState extends State<HomeTab> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Challenge One'),
+        title: const Text('Challenge One'),
       ),
       body: ListView(
         children: <Widget>[

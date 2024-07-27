@@ -25,11 +25,11 @@ class _AddChallengePageState extends State<AddChallengePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('새 챌린지'),
+        title: const Text('새 챌린지'),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
               CustomTextField(

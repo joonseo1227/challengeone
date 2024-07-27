@@ -89,11 +89,11 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('설정'),
+        title: const Text('설정'),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
               SecondaryButton(
@@ -125,7 +125,8 @@ class _SettingsPageState extends State<SettingsPage> {
                               onTap: () {
                                 Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute(
-                                        builder: (context) => LoginPage()),
+                                        builder: (context) =>
+                                            const LoginPage()),
                                     (route) => false);
                               }),
                         ],

@@ -20,8 +20,8 @@ class _MainPageState extends State<MainPage> {
 
   static List<Widget> _widgetOptions = <Widget>[
     HomeTab(),
-    ChallengeTab(),
-    PeopleTab(),
+    const ChallengeTab(),
+    PeopleTab(initialIndex: 0, uid: auth.currentUser!.uid),
     NotificationsTab(),
     ProfileTab(uid: auth.currentUser!.uid),
   ];
@@ -38,7 +38,7 @@ class _MainPageState extends State<MainPage> {
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        items: <BottomNavigationBarItem>[
+        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: '홈',

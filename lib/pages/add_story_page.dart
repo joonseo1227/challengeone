@@ -94,11 +94,11 @@ class _AddStoryPageState extends State<AddStoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('새 스토리'),
+        title: const Text('새 스토리'),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
               CustomTextField(
