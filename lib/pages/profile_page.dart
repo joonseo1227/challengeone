@@ -20,17 +20,42 @@ class ProfileTab extends StatefulWidget {
 }
 
 class _ProfileTabState extends State<ProfileTab> {
+  final User? user = FirebaseAuth.instance.currentUser;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
   bool isFollowing = false;
   bool isLoading = true;
   DocumentSnapshot? userProfile;
+  int followersCount = 0;
+  int followingCount = 0;
 
   @override
   void initState() {
     super.initState();
     _loadProfile();
     _checkIfFollowing();
+    _fetchCounts();
+  }
+
+  Future<void> _fetchCounts() async {
+    if (user != null) {
+      var followersSnapshot = await FirebaseFirestore.instance
+          .collection('following')
+          .doc(user!.uid)
+          .collection('userFollowers')
+          .get();
+      var followingSnapshot = await FirebaseFirestore.instance
+          .collection('following')
+          .doc(user!.uid)
+          .collection('userfollowing')
+          .get();
+
+      setState(() {
+        followersCount = followersSnapshot.size;
+        followingCount = followingSnapshot.size;
+        isLoading = false;
+      });
+    }
   }
 
   Future<void> _loadProfile() async {
@@ -183,7 +208,7 @@ class _ProfileTabState extends State<ProfileTab> {
                   child: Column(
                     children: [
                       Text(
-                        '5',
+                        '$followersCount',
                         style: TextStyle(
                           color: grey100,
                           fontSize: 20,
@@ -210,7 +235,7 @@ class _ProfileTabState extends State<ProfileTab> {
                   child: Column(
                     children: [
                       Text(
-                        '5',
+                        '$followingCount',
                         style: TextStyle(
                           color: grey100,
                           fontSize: 20,

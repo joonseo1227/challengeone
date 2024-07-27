@@ -70,8 +70,11 @@ class _PeopleSearchPageState extends State<PeopleSearchPage> {
         itemBuilder: (context, index) {
           var user = _searchResults[index];
           return ListTile(
+            leading: CircleAvatar(
+              backgroundImage:
+                  NetworkImage(user['profileImage']), // 프로필 이미지 URL 사용
+            ),
             title: Text(user['name']),
-            subtitle: Text(user['profileImage']),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
