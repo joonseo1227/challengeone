@@ -1,3 +1,5 @@
+import 'package:challengeone/config/color.dart';
+import 'package:challengeone/pages/people_search_page.dart';
 import 'package:challengeone/pages/profile_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -85,6 +87,16 @@ class _PeopleTabState extends State<PeopleTab> with TickerProviderStateMixin {
       child: Scaffold(
         appBar: AppBar(
           title: Text(userName), // 유저 이름 표시
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => PeopleSearchPage()));
+              },
+              icon: Icon(Icons.search),
+              color: grey100,
+            )
+          ],
           bottom: TabBar(
             controller: tabController,
             tabs: [

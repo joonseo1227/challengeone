@@ -1,66 +1,31 @@
 import 'package:challengeone/config/color.dart';
 import 'package:challengeone/models/challenge.dart';
-import 'package:challengeone/pages/login_page.dart';
 import 'package:challengeone/providers/challenge_provider.dart';
-import 'package:challengeone/widgets/button_widget.dart';
 import 'package:challengeone/widgets/listtitle_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class MyChallenges extends StatefulWidget {
-  const MyChallenges({super.key});
+class UserChallenges extends StatefulWidget {
+  final String uid;
+
+  const UserChallenges({Key? key, required this.uid}) : super(key: key);
 
   @override
-  State<MyChallenges> createState() => _MyChallengesState();
+  State<UserChallenges> createState() => _UserChallengesState();
 }
 
-class _MyChallengesState extends State<MyChallenges> {
+class _UserChallengesState extends State<UserChallenges> {
   final ChallengeProvider firebaseDB =
       ChallengeProvider(firebaseFirestore: FirebaseFirestore.instance);
 
   @override
   Widget build(BuildContext context) {
-    final User? user = FirebaseAuth.instance.currentUser;
-
-    if (user == null) {
-      return Center(
-        child: Column(
-          children: [
-            const Text(
-              '내 챌린지를 확인하려면 로그인하세요',
-              style: TextStyle(
-                color: grey60,
-                fontSize: 16,
-              ),
-            ),
-            SizedBox(
-              width: 80,
-              child: GhostButton(
-                text: "로그인",
-                onTap: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => const LoginPage()),
-                    (route) => false,
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ListTitle(
-          title: '내 챌린지',
-          subtitle: '오늘의 목표를 완료하고 보상을 받으세요',
-        ),
         StreamBuilder<List<Challenge>>(
-          stream: firebaseDB.getChallenges(user.uid),
+          stream: firebaseDB.getChallenges(widget.uid),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(

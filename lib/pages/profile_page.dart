@@ -1,5 +1,4 @@
 import 'package:challengeone/config/color.dart';
-import 'package:challengeone/pages/add_challenge_page.dart';
 import 'package:challengeone/pages/people_page.dart';
 import 'package:challengeone/pages/settings_page.dart';
 import 'package:challengeone/pages/story_page.dart';
@@ -323,29 +322,13 @@ class _ProfileTabState extends State<ProfileTab> {
               ),
             ),
           const SizedBox(
-            height: 32,
-          ),
-          const MyChallenges(),
-          const SizedBox(
             height: 16,
           ),
-        ],
-      ),
-      floatingActionButton: Visibility(
-        visible: widget.uid == auth.currentUser?.uid,
-        child: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => AddChallengePage()));
-          },
-          backgroundColor: blue50,
-          shape: const CircleBorder(),
-          elevation: 0,
-          child: const Icon(
-            Icons.add,
-            color: white,
+          UserChallenges(uid: widget.uid),
+          const SizedBox(
+            height: 32,
           ),
-        ),
+        ],
       ),
     );
   }

@@ -106,8 +106,6 @@ class _SettingsPageState extends State<SettingsPage> {
               SecondaryButton(
                 text: "로그아웃",
                 onTap: () async {
-                  await FirebaseAuth.instance.signOut();
-
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -122,7 +120,9 @@ class _SettingsPageState extends State<SettingsPage> {
                               }),
                           DialogButtonData(
                               text: '로그아웃',
-                              onTap: () {
+                              onTap: () async {
+                                await FirebaseAuth.instance.signOut();
+
                                 Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute(
                                         builder: (context) =>

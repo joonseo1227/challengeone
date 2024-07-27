@@ -29,12 +29,6 @@ class PeopleProvider {
           .set({
         'uid': auth.currentUser?.uid,
       });
-      await firestore.collection('user').doc(auth.currentUser?.uid).update({
-        //'followingCount': 1 증가,
-      });
-      await firestore.collection('user').doc(uid).update({
-        //'followerCount': 1 증가,
-      });
     } catch (e) {
       throw Exception();
     }
@@ -54,12 +48,6 @@ class PeopleProvider {
           .collection('userFollowers')
           .doc(auth.currentUser?.uid)
           .delete();
-      await firestore.collection('user').doc(auth.currentUser?.uid).update({
-        //'followingCount': -1 증가,
-      });
-      await firestore.collection('user').doc(uid).update({
-        //'followerCount': -1 증가,
-      });
     } catch (e) {
       throw Exception();
     }

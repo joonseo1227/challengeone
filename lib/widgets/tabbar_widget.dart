@@ -6,25 +6,20 @@ import 'package:challengeone/pages/profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-final auth = FirebaseAuth.instance;
-
 class MainPage extends StatefulWidget {
   @override
   _MainPageState createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
-  User? currentUser = FirebaseAuth.instance.currentUser;
-
   int _selectedIndex = 0;
+  late User? currentUser;
 
-  static List<Widget> _widgetOptions = <Widget>[
-    HomeTab(),
-    const ChallengeTab(),
-    PeopleTab(initialIndex: 0, uid: auth.currentUser!.uid),
-    NotificationsTab(),
-    ProfileTab(uid: auth.currentUser!.uid),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    currentUser = FirebaseAuth.instance.currentUser;
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -34,8 +29,19 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> _pages = <Widget>[
+      HomeTab(),
+      ChallengeTab(),
+      PeopleTab(uid: currentUser?.uid ?? ''),
+      NotificationsTab(),
+      ProfileTab(uid: currentUser?.uid ?? ''),
+    ];
+
     return Scaffold(
-      body: _widgetOptions.elementAt(_selectedIndex),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _pages,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
