@@ -3,7 +3,10 @@ import 'package:challengeone/pages/home_page.dart';
 import 'package:challengeone/pages/notifications_page.dart';
 import 'package:challengeone/pages/people_page.dart';
 import 'package:challengeone/pages/profile_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+final auth = FirebaseAuth.instance;
 
 class MainPage extends StatefulWidget {
   @override
@@ -11,6 +14,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  User? currentUser = FirebaseAuth.instance.currentUser;
+
   int _selectedIndex = 0;
 
   static List<Widget> _widgetOptions = <Widget>[
@@ -18,7 +23,7 @@ class _MainPageState extends State<MainPage> {
     ChallengeTab(),
     PeopleTab(),
     NotificationsTab(),
-    ProfileTab(),
+    ProfileTab(uid: auth.currentUser!.uid),
   ];
 
   void _onItemTapped(int index) {

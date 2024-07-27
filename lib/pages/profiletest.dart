@@ -3,130 +3,64 @@ import 'package:challengeone/pages/add_challenge_page.dart';
 import 'package:challengeone/pages/people_page.dart';
 import 'package:challengeone/pages/settings_page.dart';
 import 'package:challengeone/pages/story_page.dart';
-import 'package:challengeone/widgets/button_widget.dart';
 import 'package:challengeone/widgets/challenges_widget.dart';
 import 'package:challengeone/widgets/imageavatar_widget.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:challengeone/providers/story_provider.dart';
+
 
 class ProfileTab extends StatefulWidget {
-  final String uid;
-
-  ProfileTab({required this.uid});
-
   @override
   State<ProfileTab> createState() => _ProfileTabState();
 }
 
 class _ProfileTabState extends State<ProfileTab> {
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  final FirebaseAuth auth = FirebaseAuth.instance;
-  bool isFollowing = false;
+  late User? currentUser;
   bool isLoading = true;
-  DocumentSnapshot? userProfile;
+  List<Map<String, String>> userInfo = [];
 
-  @override
-  void initState() {
-    super.initState();
-    _loadProfile();
-    _checkIfFollowing();
-  }
+  // Firestore에서 사용자 정보를 비동기로 가져오는 함수
+  Future<void> _loadData() async {
+    StoryProvider storyProvider =
+    StoryProvider(firebaseFirestore: FirebaseFirestore.instance);
 
-  Future<void> _loadProfile() async {
-    var userDoc = await firestore.collection('user').doc(widget.uid).get();
+    List<Map<String, String>> fetchedUserInfo =
+    await storyProvider.getUserInfo();
+
     setState(() {
-      userProfile = userDoc;
+      userInfo = fetchedUserInfo;
       isLoading = false;
+
+      if (currentUser != null) {
+        int myIndex = _findMyIndex(currentUser!.uid);
+        print('My UID index: $myIndex');
+      }
     });
   }
 
-  Future<void> _checkIfFollowing() async {
-    var followDoc = await firestore
-        .collection('following')
-        .doc(auth.currentUser?.uid)
-        .collection('userfollowing')
-        .doc(widget.uid)
-        .get();
-    setState(() {
-      isFollowing = followDoc.exists;
-    });
-  }
-
-  Future<void> _followUser() async {
-    try {
-      await firestore
-          .collection('following')
-          .doc(auth.currentUser?.uid)
-          .collection('userfollowing')
-          .doc(widget.uid)
-          .set({
-        'uid': widget.uid,
-      });
-      await firestore
-          .collection('following')
-          .doc(widget.uid)
-          .collection('userFollowers')
-          .doc(auth.currentUser?.uid)
-          .set({
-        'uid': auth.currentUser?.uid,
-      });
-      setState(() {
-        isFollowing = true;
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Future<void> _unfollowUser() async {
-    try {
-      await firestore
-          .collection('following')
-          .doc(auth.currentUser?.uid)
-          .collection('userfollowing')
-          .doc(widget.uid)
-          .delete();
-      await firestore
-          .collection('following')
-          .doc(widget.uid)
-          .collection('userFollowers')
-          .doc(auth.currentUser?.uid)
-          .delete();
-      setState(() {
-        isFollowing = false;
-      });
-    } catch (e) {
-      print(e);
-    }
+  // 현재 로그인한 유저의 UID 인덱스를 찾는 함수
+  int _findMyIndex(String uid) {
+    return userInfo.indexWhere((user) => user['uid'] == uid);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (isLoading) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('프로필'),
-        ),
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(userProfile?['name'] ?? '프로필'),
+        title: Text(
+          user?.displayName ?? '게스트',
+        ),
         actions: [
-          if (widget.uid == auth.currentUser?.uid)
-            IconButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => SettingsPage()));
-              },
-              icon: Icon(Icons.settings),
-              color: grey100,
-            ),
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => SettingsPage()));
+            },
+            icon: Icon(Icons.settings),
+            color: grey100,
+          )
         ],
       ),
       body: ListView(
@@ -147,7 +81,7 @@ class _ProfileTabState extends State<ProfileTab> {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
                     child: ImageAvatar(
-                      imageUrl: userProfile?['profileImage'] ?? 'url',
+                      imageUrl: ,
                       size: 96,
                       type: Shape.MYSTORY,
                     ),
@@ -232,24 +166,6 @@ class _ProfileTabState extends State<ProfileTab> {
               ],
             ),
           ),
-          if (widget.uid != auth.currentUser?.uid)
-            Padding(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  if (isFollowing)
-                    SecondaryButton(
-                      text: '팔로잉',
-                      onTap: _unfollowUser,
-                    )
-                  else
-                    PrimaryButton(
-                      text: '팔로우',
-                      onTap: _followUser,
-                    ),
-                ],
-              ),
-            ),
           const SizedBox(
             height: 32,
           ),
@@ -257,6 +173,16 @@ class _ProfileTabState extends State<ProfileTab> {
           SizedBox(
             height: 16,
           ),
+          Text(
+            '이름: ${userProfile?['name']}',
+            style: TextStyle(fontSize: 20),
+          ),
+          SizedBox(height: 16),
+          if (widget.uid != auth.currentUser?.uid)
+            ElevatedButton(
+              onPressed: isFollowing ? _unfollowUser : _followUser,
+              child: Text(isFollowing ? '언팔로우' : '팔로우'),
+            ),
         ],
       ),
       floatingActionButton: FloatingActionButton(

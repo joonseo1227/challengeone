@@ -8,7 +8,7 @@ class CustomTextField extends StatefulWidget {
   final TextEditingController? controller;
   final bool obscureText;
   final TextInputType keyboardType;
-  final Color? backgroundColor; // 백그라운드 컬러 추가
+  final Color? backgroundColor;
 
   const CustomTextField({
     Key? key,
@@ -18,7 +18,7 @@ class CustomTextField extends StatefulWidget {
     this.controller,
     this.obscureText = false,
     this.keyboardType = TextInputType.text,
-    this.backgroundColor, // 백그라운드 컬러 초기화
+    this.backgroundColor,
   }) : super(key: key);
 
   @override
@@ -78,7 +78,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 color: grey40,
               ),
               filled: true,
-              fillColor: widget.backgroundColor ?? grey10, // 백그라운드 컬러 적용
+              fillColor: widget.backgroundColor ?? grey10,
               enabledBorder: UnderlineInputBorder(
                 borderRadius: BorderRadius.circular(0),
                 borderSide: BorderSide(
@@ -93,6 +93,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   width: 2,
                 ),
               ),
+              suffixIcon: widget.controller?.text.isNotEmpty ?? false
+                  ? IconButton(
+                      icon: Icon(Icons.clear),
+                      onPressed: () {
+                        widget.controller?.clear();
+                      },
+                    )
+                  : null,
             ),
           ),
         ),
@@ -120,6 +128,100 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return widget.errorText != null && widget.errorText!.isNotEmpty
         ? red60
         : grey60;
+  }
+
+  Color _getFocusBorderColor() {
+    return _hasFocus ? blue50 : grey60;
+  }
+}
+
+class CustomSearchBar extends StatefulWidget {
+  final String? hint;
+  final TextEditingController? controller;
+  final Color? backgroundColor;
+  final Function(String)? onSubmitted;
+
+  const CustomSearchBar({
+    Key? key,
+    this.hint,
+    this.controller,
+    this.backgroundColor,
+    this.onSubmitted,
+  }) : super(key: key);
+
+  @override
+  State<CustomSearchBar> createState() => _CustomSearchBarState();
+}
+
+class _CustomSearchBarState extends State<CustomSearchBar> {
+  late FocusNode _focusNode;
+  bool _hasFocus = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = FocusNode();
+    _focusNode.addListener(_onFocusChange);
+  }
+
+  @override
+  void dispose() {
+    _focusNode.removeListener(_onFocusChange);
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  void _onFocusChange() {
+    setState(() {
+      _hasFocus = _focusNode.hasFocus;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 48,
+      child: TextField(
+        controller: widget.controller,
+        focusNode: _focusNode,
+        decoration: InputDecoration(
+          hintText: widget.hint,
+          hintStyle: TextStyle(
+            color: grey40,
+          ),
+          filled: true,
+          fillColor: widget.backgroundColor ?? grey10,
+          enabledBorder: UnderlineInputBorder(
+            borderRadius: BorderRadius.circular(0),
+            borderSide: BorderSide(
+              color: _getErrorBorderColor(),
+              width: 1,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(0),
+            borderSide: BorderSide(
+              color: _getFocusBorderColor(),
+              width: 2,
+            ),
+          ),
+          prefixIcon: Icon(Icons.search, color: _hasFocus ? blue50 : grey60),
+          suffixIcon: widget.controller?.text.isNotEmpty ?? false
+              ? IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: () {
+                    widget.controller?.clear();
+                  },
+                )
+              : null,
+        ),
+        onSubmitted: widget.onSubmitted,
+      ),
+    );
+  }
+
+  Color _getErrorBorderColor() {
+    return grey60;
   }
 
   Color _getFocusBorderColor() {

@@ -1,4 +1,5 @@
 import 'package:challengeone/config/color.dart';
+import 'package:challengeone/pages/people_search_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -40,6 +41,16 @@ class _PeopleTabState extends State<PeopleTab> with TickerProviderStateMixin {
           title: Text(
             user?.displayName ?? '게스트',
           ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => PeopleSearchPage()));
+              },
+              icon: Icon(Icons.search),
+              color: grey100,
+            )
+          ],
           bottom: TabBar(
             controller: tabController,
             tabs: const [
