@@ -55,7 +55,7 @@ class _AddStoryPageState extends State<AddStoryPage> {
     if (_imageFile == null) return;
 
     try {
-      final uid = FirebaseAuth.instance.currentUser?.uid ?? 'guest';
+      final uid = FirebaseAuth.instance.currentUser?.uid ?? '';
       final storageRef = storage
           .ref()
           .child('storyImage/${DateTime.now().millisecondsSinceEpoch}.jpg');

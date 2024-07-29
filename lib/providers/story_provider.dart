@@ -60,7 +60,7 @@ class StoryProvider {
       return querySnapshot.docs.map((doc) {
         return {
           "name": doc['name'] as String,
-          "profileImage": doc['profileImage'] as String,
+          "profileImage": doc['profileImageUrl'] as String,
           "uid": doc['uid'] as String,
         };
       }).toList();

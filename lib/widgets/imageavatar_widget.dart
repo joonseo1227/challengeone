@@ -8,14 +8,14 @@ class ImageAvatar extends StatelessWidget {
   final double size;
   final Shape type;
   final void Function()? onTap;
-  final String? imageUrl; // 이미지 URL 추가
+  final String? imageUrl;
 
   const ImageAvatar({
     super.key,
     this.size = 80,
     required this.type,
     this.onTap,
-    this.imageUrl, // 이미지 URL 초기화
+    this.imageUrl,
   });
 
   @override
@@ -32,17 +32,14 @@ class ImageAvatar extends StatelessWidget {
     }
   }
 
-  // 기본 아바타 위젯, 이미지가 있으면 이미지를 사용하고 없으면 기본 아이콘을 사용
+  // 기본 아바타 위젯
   Widget _basicAvatar() {
     return Container(
       padding: const EdgeInsets.all(3),
       decoration: const BoxDecoration(color: white, shape: BoxShape.circle),
       child: CircleAvatar(
         radius: size / 2,
-        backgroundImage: imageUrl != null
-            ? NetworkImage(imageUrl!) // 이미지 URL을 사용하는 경우
-            : const AssetImage('assets/images/user1.png')
-                as ImageProvider, // 기본 아이콘을 사용하는 경우
+        backgroundImage: NetworkImage(imageUrl!),
       ),
     );
   }
@@ -78,7 +75,6 @@ class ImageAvatar extends StatelessWidget {
     );
   }
 
-  // 온라인 상태 아바타 위젯
   Widget _onAvatar() {
     return Container(
       height: size + 3,
@@ -92,7 +88,6 @@ class ImageAvatar extends StatelessWidget {
     );
   }
 
-  // 오프라인 상태 아바타 위젯
   Widget _offAvatar() {
     return Container(
       height: size + 3,

@@ -65,7 +65,7 @@ class _ProfileTabState extends State<ProfileTab> {
 
   // 스토리 페이지를 열 때 uid를 사용
   void _openStoryPage(int select) {
-    final uidList = userInfo.map((user) => user['uid'] ?? 'guest').toList();
+    final uidList = userInfo.map((user) => user['uid'] ?? '').toList();
 
     context.pushTransparentRoute(
       StoryPage(uidList: uidList, initIndex: select),
@@ -218,9 +218,7 @@ class _ProfileTabState extends State<ProfileTab> {
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
                       child: ImageAvatar(
-                        imageUrl: userProfile != null
-                            ? userProfile!['profileImageUrl']
-                            : '',
+                        imageUrl: userProfile?['profileImageUrl'] ?? '',
                         size: 96,
                         type: Shape.MYSTORY,
                       ),
@@ -233,7 +231,7 @@ class _ProfileTabState extends State<ProfileTab> {
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
                       child: ImageAvatar(
-                        imageUrl: userProfile?['profileImageUrl'] ?? 'url',
+                        imageUrl: userProfile?['profileImageUrl'] ?? '',
                         size: 96,
                         type: Shape.STORY,
                       ),
