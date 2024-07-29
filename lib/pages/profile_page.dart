@@ -91,7 +91,7 @@ class _ProfileTabState extends State<ProfileTab> {
     firestore
         .collection('following')
         .doc(widget.uid)
-        .collection('userfollowing')
+        .collection('userFollowing')
         .snapshots()
         .listen((snapshot) {
       setState(() {
@@ -116,7 +116,7 @@ class _ProfileTabState extends State<ProfileTab> {
     var doc = await firestore
         .collection('following')
         .doc(currentUid)
-        .collection('userfollowing')
+        .collection('userFollowing')
         .doc(widget.uid)
         .get(); // 현재 프로필의 사용자 UID로 접근
     setState(() {
@@ -134,7 +134,7 @@ class _ProfileTabState extends State<ProfileTab> {
     await firestore
         .collection('following')
         .doc(currentUid)
-        .collection('userfollowing')
+        .collection('userFollowing')
         .doc(widget.uid)
         .set({}); // 현재 프로필의 사용자 UID로 팔로우 추가
 
@@ -161,7 +161,7 @@ class _ProfileTabState extends State<ProfileTab> {
     await firestore
         .collection('following')
         .doc(currentUid)
-        .collection('userfollowing')
+        .collection('userFollowing')
         .doc(widget.uid)
         .delete(); // 현재 프로필의 사용자 UID로 팔로잉 제거
 

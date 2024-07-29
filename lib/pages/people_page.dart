@@ -103,7 +103,7 @@ class _PeopleTabState extends State<PeopleTab> with TickerProviderStateMixin {
                   stream: FirebaseFirestore.instance
                       .collection('following')
                       .doc(widget.uid)
-                      .collection('userfollowing')
+                      .collection('userFollowing')
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -169,7 +169,7 @@ class _PeopleTabState extends State<PeopleTab> with TickerProviderStateMixin {
       stream: FirebaseFirestore.instance
           .collection('following')
           .doc(widget.uid)
-          .collection('userfollowing')
+          .collection('userFollowing')
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {

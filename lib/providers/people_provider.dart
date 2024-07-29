@@ -16,7 +16,7 @@ class PeopleProvider {
       await firestore
           .collection('following')
           .doc(auth.currentUser?.uid)
-          .collection('userfollowing')
+          .collection('userFollowing')
           .doc(uid)
           .set({
         'uid': uid,
@@ -39,7 +39,7 @@ class PeopleProvider {
       await firestore
           .collection('following')
           .doc(auth.currentUser?.uid)
-          .collection('userfollowing')
+          .collection('userFollowing')
           .doc(uid)
           .delete();
       await firestore
