@@ -219,7 +219,7 @@ class _ProfileTabState extends State<ProfileTab> {
                       padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
                       child: ImageAvatar(
                         imageUrl: userProfile != null
-                            ? userProfile!['profileImage']
+                            ? userProfile!['profileImageUrl']
                             : '',
                         size: 96,
                         type: Shape.MYSTORY,
@@ -233,7 +233,7 @@ class _ProfileTabState extends State<ProfileTab> {
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
                       child: ImageAvatar(
-                        imageUrl: userProfile?['profileImage'] ?? 'url',
+                        imageUrl: userProfile?['profileImageUrl'] ?? 'url',
                         size: 96,
                         type: Shape.STORY,
                       ),

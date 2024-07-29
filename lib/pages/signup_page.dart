@@ -161,7 +161,7 @@ class _SignupPageState extends State<SignupPage> {
           await firestore.collection('user').doc(auth.currentUser?.uid).set({
             'uid': auth.currentUser?.uid,
             'name': auth.currentUser?.displayName,
-            'profileImage': 'imageUrl',
+            'profileImageUrl': 'imageUrl',
           });
         } catch (e) {
           showDialog(
@@ -185,14 +185,14 @@ class _SignupPageState extends State<SignupPage> {
       } else {
         try {
           final storageRef = storage.ref().child(
-              'profileImage/${DateTime.now().millisecondsSinceEpoch}.jpg');
+              'profileImageUrl/${DateTime.now().millisecondsSinceEpoch}.jpg');
           await storageRef.putFile(_imageFile!);
           final imageUrl = await storageRef.getDownloadURL();
 
           await firestore.collection('user').doc(auth.currentUser?.uid).set({
             'uid': auth.currentUser?.uid,
             'name': auth.currentUser?.displayName,
-            'profileImage': imageUrl,
+            'profileImageUrl': imageUrl,
           });
         } catch (e) {
           showDialog(

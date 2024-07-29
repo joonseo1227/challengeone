@@ -52,16 +52,15 @@ class _SettingsPageState extends State<SettingsPage> {
 
     if (_imageFile != null) {
       try {
-        final storageRef = storage
-            .ref()
-            .child('profileImage/${DateTime.now().millisecondsSinceEpoch}.jpg');
+        final storageRef = storage.ref().child(
+            'profileImageUrl/${DateTime.now().millisecondsSinceEpoch}.jpg');
         await storageRef.putFile(_imageFile!);
         final imageUrl = await storageRef.getDownloadURL();
 
         await firestore.collection('user').doc(auth.currentUser?.uid).set({
           'uid': auth.currentUser?.uid,
           'name': auth.currentUser?.displayName,
-          'profileImage': imageUrl,
+          'profileImageUrl': imageUrl,
         });
       } catch (e) {
         showDialog(

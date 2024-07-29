@@ -58,7 +58,7 @@ class _StoriesState extends State<Stories> {
         userInfo = snapshot.data!.docs.map((doc) {
           return {
             "name": doc['name'] as String,
-            "profileImage": doc['profileImage'] as String,
+            "profileImageUrl": doc['profileImageUrl'] as String,
             "uid": doc['uid'] as String,
           };
         }).toList();
@@ -78,7 +78,7 @@ class _StoriesState extends State<Stories> {
                       padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
                       child: ImageAvatar(
                         imageUrl: userInfo[_findMyIndex(currentUser!.uid)]
-                            ['profileImage'],
+                            ['profileImageUrl'],
                         size: 80,
                         type: Shape.MYSTORY,
                       ),
@@ -109,7 +109,7 @@ class _StoriesState extends State<Stories> {
                           padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
                           child: ImageAvatar(
                             size: 80,
-                            imageUrl: user['profileImage'],
+                            imageUrl: user['profileImageUrl'],
                             type: Shape.STORY,
                           ),
                         ),

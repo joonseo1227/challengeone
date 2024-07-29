@@ -17,7 +17,7 @@ class StoryProvider {
           await firebaseFirestore.collection('user').doc(uid).get();
       return {
         "name": doc['name'] as String,
-        "profileImage": doc['profileImage'] as String,
+        "profileImageUrl": doc['profileImageUrl'] as String,
         "uid": doc['uid'] as String,
       };
     } catch (e) {

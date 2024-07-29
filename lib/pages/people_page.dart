@@ -218,7 +218,7 @@ class _PeopleTabState extends State<PeopleTab> with TickerProviderStateMixin {
         var user = snapshot.data!;
         return ListTile(
           leading: CircleAvatar(
-            backgroundImage: NetworkImage(user['profileImage']),
+            backgroundImage: NetworkImage(user['profileImageUrl']),
           ),
           title: Text(user['name']),
           onTap: () {

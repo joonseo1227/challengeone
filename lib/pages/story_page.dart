@@ -119,7 +119,7 @@ class _StoryPageState extends State<StoryPage> {
                             children: [
                               CircleAvatar(
                                 backgroundImage: NetworkImage(
-                                  userInfo["profileImage"]!,
+                                  userInfo["profileImageUrl"]!,
                                 ),
                               ),
                               const SizedBox(width: 10.0),

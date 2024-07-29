@@ -74,7 +74,7 @@ class _PeopleSearchPageState extends State<PeopleSearchPage> {
           Widget listTile = ListTile(
             leading: CircleAvatar(
               backgroundImage:
-                  NetworkImage(user['profileImage']), // 프로필 이미지 URL 사용
+                  NetworkImage(user['profileImageUrl']), // 프로필 이미지 URL 사용
             ),
             title: Text(user['name']),
             onTap: () {
