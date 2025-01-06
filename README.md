@@ -8,12 +8,12 @@ Challenge One은 사용자들이 목표를 설정하고 이를 효과적으로 �
 <br>
 
 ## 📱 스크린샷
-<img src="https://github.com/user-attachments/assets/feed894f-02ee-4d5f-aa5c-5bcaf75e00ce" width="50%"/>
-<img src="https://github.com/user-attachments/assets/288edcb3-aa38-4555-bd42-64a945ea0218" width="50%"/>
-<img src="https://github.com/user-attachments/assets/5057e9e1-f80c-4f54-84f0-a12b6d49a39f" width="50%"/>
-<img src="https://github.com/user-attachments/assets/8dbe653f-b454-4939-8848-01efc568da86" width="50%"/>
-<img src="https://github.com/user-attachments/assets/8a0f2c97-34fe-4f48-b18d-28cc097a1edd" width="50%"/>
-<img src="https://github.com/user-attachments/assets/2a7f817a-0457-40c3-b1a7-c2bbbd37df2d" width="50%"/>
+<img src="https://github.com/user-attachments/assets/feed894f-02ee-4d5f-aa5c-5bcaf75e00ce" width="40%"/>
+<img src="https://github.com/user-attachments/assets/288edcb3-aa38-4555-bd42-64a945ea0218" width="40%"/>
+<img src="https://github.com/user-attachments/assets/5057e9e1-f80c-4f54-84f0-a12b6d49a39f" width="40%"/>
+<img src="https://github.com/user-attachments/assets/8dbe653f-b454-4939-8848-01efc568da86" width="40%"/>
+<img src="https://github.com/user-attachments/assets/8a0f2c97-34fe-4f48-b18d-28cc097a1edd" width="40%"/>
+<img src="https://github.com/user-attachments/assets/2a7f817a-0457-40c3-b1a7-c2bbbd37df2d" width="40%"/>
 
 <br>
 
