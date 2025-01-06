@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 class UserChallenges extends StatefulWidget {
   final String uid;
 
-  const UserChallenges({Key? key, required this.uid}) : super(key: key);
+  const UserChallenges({super.key, required this.uid});
 
   @override
   State<UserChallenges> createState() => _UserChallengesState();

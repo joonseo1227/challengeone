@@ -27,12 +27,10 @@ class _StoriesState extends State<Stories> {
     super.initState();
   }
 
-  // 현재 로그인한 유저의 UID 인덱스를 찾는 함수
   int _findMyIndex(String uid) {
     return userInfo.indexWhere((user) => user['uid'] == uid);
   }
 
-  // 스토리 페이지를 열 때 uid를 사용
   void _openStoryPage(int select) {
     final uidList = userInfo.map((user) => user['uid'] ?? 'guest').toList();
 
@@ -52,16 +50,28 @@ class _StoriesState extends State<Stories> {
           return const Center(child: CircularProgressIndicator());
         }
         if (snapshot.hasError) {
-          return const Center(child: Text('Something went wrong'));
+          return const Center(child: Text('데이터를 불러오는 중 오류가 발생했습니다.'));
         }
 
         userInfo = snapshot.data!.docs.map((doc) {
-          return {
-            "name": doc['name'] as String,
-            "profileImageUrl": doc['profileImageUrl'] as String,
-            "uid": doc['uid'] as String,
-          };
+          if (doc.exists) {
+            return {
+              "name": doc['name'] as String? ?? 'Unknown',
+              "profileImageUrl": doc['profileImageUrl'] as String? ?? '',
+              "uid": doc['uid'] as String? ?? '',
+            };
+          } else {
+            return {
+              "name": 'Unknown',
+              "profileImageUrl": '',
+              "uid": '',
+            };
+          }
         }).toList();
+
+        if (userInfo.isEmpty || _findMyIndex(currentUser!.uid) == -1) {
+          return const Center(child: Text('사용자 데이터를 불러올 수 없습니다.'));
+        }
 
         return SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
@@ -72,13 +82,16 @@ class _StoriesState extends State<Stories> {
               Column(
                 children: [
                   GestureDetector(
-                    onTap: () => _openStoryPage(
-                        _findMyIndex(currentUser!.uid)), // 내 uid로 설정
+                    onTap: () {
+                      int myIndex = _findMyIndex(currentUser!.uid);
+                      if (myIndex != -1) _openStoryPage(myIndex);
+                    },
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
                       child: ImageAvatar(
                         imageUrl: userInfo[_findMyIndex(currentUser!.uid)]
-                            ['profileImageUrl'],
+                        ['profileImageUrl'] ??
+                            '',
                         size: 80,
                         type: Shape.MYSTORY,
                       ),
@@ -87,20 +100,16 @@ class _StoriesState extends State<Stories> {
                   const Text(
                     '내 스토리',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: grey50,
-                    ),
+                    style: TextStyle(fontSize: 14, color: grey50),
                   ),
                 ],
               ),
-              // 현재 사용자를 제외한 다른 사용자들만 출력
               ...userInfo
                   .where((user) => user['uid'] != currentUser!.uid)
                   .map((user) {
                 int index = userInfo.indexOf(user);
                 return GestureDetector(
-                  onTap: () => _openStoryPage(index), // uid 사용
+                  onTap: () => _openStoryPage(index),
                   child: SizedBox(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -116,10 +125,7 @@ class _StoriesState extends State<Stories> {
                         Text(
                           user['name'] ?? 'user$index',
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: grey80,
-                          ),
+                          style: const TextStyle(fontSize: 14, color: grey80),
                         ),
                       ],
                     ),

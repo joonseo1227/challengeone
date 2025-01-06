@@ -5,10 +5,10 @@ class NotificationsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('알림'),
+        title: const Text('알림'),
       ),
       body: ListView(
-        children: <Widget>[
+        children: const <Widget>[
           ListTile(
             title: Text('챌린지 성공!'),
             subtitle: Text('아침 6시 기상 챌린지를 완료했어요.'),
@@ -33,7 +33,7 @@ class NotificationsTab extends StatelessWidget {
             title: Text('챌린지 성공!'),
             subtitle: Text('일기 쓰기 챌린지를 완료했어요.'),
           ),
-          const SizedBox(
+          SizedBox(
             height: 16,
           ),
         ],

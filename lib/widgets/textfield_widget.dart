@@ -11,7 +11,7 @@ class CustomTextField extends StatefulWidget {
   final Color? backgroundColor;
 
   const CustomTextField({
-    Key? key,
+    super.key,
     required this.label,
     this.hint,
     this.errorText,
@@ -19,7 +19,7 @@ class CustomTextField extends StatefulWidget {
     this.obscureText = false,
     this.keyboardType = TextInputType.text,
     this.backgroundColor,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -142,12 +142,12 @@ class CustomSearchBar extends StatefulWidget {
   final Function(String)? onSubmitted;
 
   const CustomSearchBar({
-    Key? key,
+    super.key,
     this.hint,
     this.controller,
     this.backgroundColor,
     this.onSubmitted,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomSearchBar> createState() => _CustomSearchBarState();

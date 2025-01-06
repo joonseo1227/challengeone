@@ -93,7 +93,7 @@ class DialogButton extends StatelessWidget {
   final BoxBorder? border;
 
   const DialogButton({
-    Key? key,
+    super.key,
     required this.text,
     this.onTap,
     this.textColor = grey100,
@@ -103,7 +103,7 @@ class DialogButton extends StatelessWidget {
     this.padding = const EdgeInsets.fromLTRB(32, 16, 32, 16),
     this.borderRadius = 0.0,
     this.border,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -74,7 +74,7 @@ class _PeopleTabState extends State<PeopleTab> with TickerProviderStateMixin {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => PeopleSearchPage()));
               },
-              icon: Icon(Icons.search),
+              icon: const Icon(Icons.search),
               color: grey100,
             )
           ],
@@ -154,7 +154,7 @@ class _PeopleTabState extends State<PeopleTab> with TickerProviderStateMixin {
         return ListView.separated(
           itemCount: snapshot.data!.docs.length,
           separatorBuilder: (context, index) =>
-              Divider(), // 항목 사이에 Divider를 추가합니다.
+              const Divider(), // 항목 사이에 Divider를 추가합니다.
           itemBuilder: (context, index) {
             var doc = snapshot.data!.docs[index];
             return _buildUserTile(doc.id);
@@ -189,7 +189,7 @@ class _PeopleTabState extends State<PeopleTab> with TickerProviderStateMixin {
         return ListView.separated(
           itemCount: snapshot.data!.docs.length,
           separatorBuilder: (context, index) =>
-              Divider(), // 항목 사이에 Divider를 추가합니다.
+              const Divider(),
           itemBuilder: (context, index) {
             var doc = snapshot.data!.docs[index];
             return _buildUserTile(doc.id);

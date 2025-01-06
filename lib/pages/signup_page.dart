@@ -107,14 +107,13 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   Future<void> trySignUp(String username, String email, String password) async {
-    _clearErrors(); // Clear error states
+    _clearErrors();
 
     bool isValid = true;
 
     if (!isEmailValid(_emailController.text)) {
       setState(() {
         _emailError = '유효하지 않은 이메일 형식이에요.';
-        _emailController.clear(); // Clear the email field
       });
       isValid = false;
     }
@@ -122,7 +121,6 @@ class _SignupPageState extends State<SignupPage> {
     if (_passwordController.text.length < 6) {
       setState(() {
         _passwordError = '암호는 6글자 이상이어야 해요.';
-        _passwordController.clear(); // Clear the password field
       });
       isValid = false;
     }
@@ -130,99 +128,55 @@ class _SignupPageState extends State<SignupPage> {
     if (_passwordController.text != _confirmPasswordController.text) {
       setState(() {
         _confirmPasswordError = '암호가 일치하지 않아요.';
-        _confirmPasswordController.clear(); // Clear the confirm password field
       });
       isValid = false;
     }
 
-    if (!isValid) {
-      return; // Exit function if there are any errors
-    }
+    if (!isValid) return;
 
     try {
       showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         },
       );
 
-      var result = await auth.createUserWithEmailAndPassword(
+      UserCredential result = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      await result.user?.updateDisplayName(username);
 
-      if (_imageFile == null) {
-        try {
-          await firestore.collection('user').doc(auth.currentUser?.uid).set({
-            'uid': auth.currentUser?.uid,
-            'name': auth.currentUser?.displayName,
-            'profileImageUrl': 'imageUrl',
-          });
-        } catch (e) {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return DialogUI(
-                title: '회원 가입 오류',
-                content: '$e',
-                buttons: [
-                  DialogButtonData(
-                      text: '확인',
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      }),
-                ],
-                buttonAxis: Axis.horizontal,
-              );
-            },
-          );
-        }
-      } else {
-        try {
-          final storageRef = storage.ref().child(
-              'profileImageUrl/${DateTime.now().millisecondsSinceEpoch}.jpg');
-          await storageRef.putFile(_imageFile!);
-          final imageUrl = await storageRef.getDownloadURL();
-
-          await firestore.collection('user').doc(auth.currentUser?.uid).set({
-            'uid': auth.currentUser?.uid,
-            'name': auth.currentUser?.displayName,
-            'profileImageUrl': imageUrl,
-          });
-        } catch (e) {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return DialogUI(
-                title: '회원 가입 오류',
-                content: '$e',
-                buttons: [
-                  DialogButtonData(
-                      text: '확인',
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      }),
-                ],
-                buttonAxis: Axis.horizontal,
-              );
-            },
-          );
-        }
+      final User? currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser == null) {
+        throw Exception('회원 정보 로드 실패');
       }
 
-      Navigator.of(context).pop(); // Dismiss the loading indicator
+      await currentUser.updateDisplayName(username);
+
+      String? imageUrl;
+      if (_imageFile != null) {
+        final storageRef = storage.ref().child(
+            'profileImageUrl/${DateTime.now().millisecondsSinceEpoch}.jpg');
+        await storageRef.putFile(_imageFile!);
+        imageUrl = await storageRef.getDownloadURL();
+      }
+
+      await firestore.collection('user').doc(currentUser.uid).set({
+        'uid': currentUser.uid,
+        'name': username,
+        'profileImageUrl': imageUrl,
+      });
+
+      Navigator.of(context).pop(); // 로딩 화면 닫기
 
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return DialogUI(
             title: '회원 가입 완료!',
-            content: '회원이 되신 것을 환영해요. 로그인 후 모든 서비스를 이용할 수 있어요.',
+            content: '회원 가입이 완료되었습니다. 로그인 화면으로 이동합니다.',
             buttons: [
               DialogButtonData(
                 text: '확인',
@@ -234,40 +188,35 @@ class _SignupPageState extends State<SignupPage> {
                 },
               ),
             ],
-            buttonAxis: Axis.vertical,
           );
         },
       );
     } on FirebaseAuthException catch (e) {
-      Navigator.of(context).pop(); // Dismiss the loading indicator
-
+      Navigator.of(context).pop(); // 로딩 화면 닫기
       setState(() {
-        switch (e.code) {
-          case 'email-already-in-use':
-            _emailError = '이미 사용 중인 이메일이에요.';
-            _emailController.clear(); // Clear the email field
-            break;
-          default:
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return DialogUI(
-                  title: '회원 가입 오류',
-                  content:
-                      '오류 코드: ${e.code}\n회원 가입 중 오류가 발생했어요. 나중에 다시 시도해 주세요.',
-                  buttons: [
-                    DialogButtonData(
-                        text: '확인',
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        }),
-                  ],
-                  buttonAxis: Axis.horizontal,
-                );
-              },
-            );
+        if (e.code == 'email-already-in-use') {
+          _emailError = '이미 사용 중인 이메일이에요.';
         }
       });
+    } catch (e) {
+      Navigator.of(context).pop(); // 로딩 화면 닫기
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return DialogUI(
+            title: '오류',
+            content: '회원 가입 중 오류가 발생했습니다: $e',
+            buttons: [
+              DialogButtonData(
+                text: '확인',
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
@@ -295,7 +244,11 @@ class _SignupPageState extends State<SignupPage> {
                 text: "프로필 이미지 추가",
                 onTap: _pickImage,
               ),
-              if (_imageFile != null) Image.file(_imageFile!, height: 200),
+              if (_imageFile != null)
+                Image.file(
+                  _imageFile!,
+                  height: 200,
+                ),
               const SizedBox(
                 height: 16,
               ),
