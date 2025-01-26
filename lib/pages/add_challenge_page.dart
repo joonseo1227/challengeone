@@ -1,6 +1,5 @@
-import 'package:challengeone/config/color.dart';
-import 'package:challengeone/widgets/button_widget.dart';
-import 'package:challengeone/widgets/textfield_widget.dart';
+import 'package:challengeone/widgets/c_button.dart';
+import 'package:challengeone/widgets/c_text_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -32,32 +31,31 @@ class _AddChallengePageState extends State<AddChallengePage> {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              CustomTextField(
-                backgroundColor: white,
+              CTextField(
                 label: "챌린지 이름",
                 controller: _challengeNameController,
               ),
               const SizedBox(
                 height: 16,
               ),
-              CustomTextField(
-                backgroundColor: white,
+              CTextField(
                 label: "챌린지 목표",
                 controller: _challengeGoalController,
               ),
               const SizedBox(
                 height: 16,
               ),
-              CustomTextField(
-                backgroundColor: white,
+              CTextField(
                 label: "챌린지 설명",
                 controller: _challengeDescriptionController,
               ),
               const SizedBox(
                 height: 16,
               ),
-              PrimaryButton(
-                text: "챌린지 추가",
+              CButton(
+                label: "챌린지 추가",
+                icon: Icons.add,
+                width: double.maxFinite,
                 onTap: () {
                   if (auth.currentUser?.uid != null) {
                     firestore.collection('challenge').doc().set({

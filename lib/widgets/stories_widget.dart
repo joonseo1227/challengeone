@@ -1,22 +1,24 @@
-import 'package:challengeone/config/color.dart';
+import 'package:challengeone/models/theme_model.dart';
 import 'package:challengeone/pages/story_page.dart';
+import 'package:challengeone/providers/theme_provider.dart';
 import 'package:challengeone/widgets/imageavatar_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dismissible_page/dismissible_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final auth = FirebaseAuth.instance;
 final firestore = FirebaseFirestore.instance;
 
-class Stories extends StatefulWidget {
+class Stories extends ConsumerStatefulWidget {
   const Stories({super.key});
 
   @override
-  State<Stories> createState() => _StoriesState();
+  ConsumerState<Stories> createState() => _StoriesState();
 }
 
-class _StoriesState extends State<Stories> {
+class _StoriesState extends ConsumerState<Stories> {
   List<Map<String, String>> userInfo = [];
   bool isLoading = true;
   late User? currentUser;
@@ -43,6 +45,8 @@ class _StoriesState extends State<Stories> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = ref.watch(themeProvider);
+
     return StreamBuilder<QuerySnapshot>(
       stream: firestore.collection('user').snapshots(),
       builder: (context, snapshot) {
@@ -90,17 +94,20 @@ class _StoriesState extends State<Stories> {
                       padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
                       child: ImageAvatar(
                         imageUrl: userInfo[_findMyIndex(currentUser!.uid)]
-                        ['profileImageUrl'] ??
+                                ['profileImageUrl'] ??
                             '',
                         size: 80,
                         type: Shape.MYSTORY,
                       ),
                     ),
                   ),
-                  const Text(
+                  Text(
                     '내 스토리',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 14, color: grey50),
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: ThemeModel.sub5(isDarkMode),
+                    ),
                   ),
                 ],
               ),
@@ -125,7 +132,10 @@ class _StoriesState extends State<Stories> {
                         Text(
                           user['name'] ?? 'user$index',
                           textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 14, color: grey80),
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: ThemeModel.text(isDarkMode),
+                          ),
                         ),
                       ],
                     ),

@@ -1,7 +1,9 @@
-import 'package:challengeone/config/font.dart';
+import 'package:challengeone/models/theme_model.dart';
+import 'package:challengeone/providers/theme_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ListTitle extends StatelessWidget {
+class ListTitle extends ConsumerStatefulWidget {
   final String title;
   final String subtitle;
 
@@ -11,7 +13,14 @@ class ListTitle extends StatelessWidget {
   });
 
   @override
+  ConsumerState<ListTitle> createState() => _ListTitleState();
+}
+
+class _ListTitleState extends ConsumerState<ListTitle> {
+  @override
   Widget build(BuildContext context) {
+    final isDarkMode = ref.watch(themeProvider);
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       child: Column(
@@ -19,13 +28,20 @@ class ListTitle extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            title,
-            style: Fonts.title, // Assuming Fonts.title is defined elsewhere
+            widget.title,
+            style: TextStyle(
+              color: ThemeModel.text(isDarkMode),
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
           ),
           Text(
-            subtitle,
-            style:
-                Fonts.subtitle, // Assuming Fonts.subtitle is defined elsewhere
+            widget.subtitle,
+            style: TextStyle(
+              color: ThemeModel.sub4(isDarkMode),
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ],
       ),

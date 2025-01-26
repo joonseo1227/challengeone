@@ -1,17 +1,21 @@
-import 'package:challengeone/pages/profile_page.dart';
-import 'package:challengeone/widgets/textfield_widget.dart';
+import 'package:challengeone/models/theme_model.dart';
+import 'package:challengeone/pages/main/profile_page.dart';
+import 'package:challengeone/providers/theme_provider.dart';
+import 'package:challengeone/widgets/c_search_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final auth = FirebaseAuth.instance;
 
-class PeopleSearchPage extends StatefulWidget {
+class PeopleSearchPage extends ConsumerStatefulWidget {
   @override
-  State<PeopleSearchPage> createState() => _PeopleSearchPageState();
+  ConsumerState<PeopleSearchPage> createState() => _PeopleSearchPageState();
 }
 
-class _PeopleSearchPageState extends State<PeopleSearchPage> {
+class _PeopleSearchPageState extends ConsumerState<PeopleSearchPage> {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final TextEditingController _searchController = TextEditingController();
   List<QueryDocumentSnapshot> _searchResults = [];
@@ -43,9 +47,11 @@ class _PeopleSearchPageState extends State<PeopleSearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = ref.watch(themeProvider);
+
     return Scaffold(
       appBar: AppBar(
-        title: CustomSearchBar(
+        title: CSearchBar(
           controller: _searchController,
           hint: '검색',
           onSubmitted: _searchPeople, // 함수 참조 전달
@@ -56,13 +62,27 @@ class _PeopleSearchPageState extends State<PeopleSearchPage> {
   }
 
   Widget _buildSearchResults() {
+    final isDarkMode = ref.watch(themeProvider);
+
     if (_noResultsFound) {
-      return const Center(
-        child: Text('검색 결과가 없습니다.'),
+      return Center(
+        child: Text(
+          '검색 결과가 없습니다.',
+          style: TextStyle(
+            fontSize: 16,
+            color: ThemeModel.sub5(isDarkMode),
+          ),
+        ),
       );
     } else if (_searchResults.isEmpty) {
-      return const Center(
-        child: Text('검색어를 입력하세요.'),
+      return Center(
+        child: Text(
+          '검색어를 입력하세요.',
+          style: TextStyle(
+            fontSize: 16,
+            color: ThemeModel.sub5(isDarkMode),
+          ),
+        ),
       );
     } else {
       return ListView.builder(
@@ -79,8 +99,10 @@ class _PeopleSearchPageState extends State<PeopleSearchPage> {
             title: Text(user['name']),
             onTap: () {
               Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => ProfileTab(uid: user['uid']),
+                CupertinoPageRoute(
+                  builder: (context) => ProfileTab(
+                    uid: user['uid'],
+                  ),
                 ),
               );
             },

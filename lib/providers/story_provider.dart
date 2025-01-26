@@ -1,5 +1,5 @@
 import 'package:challengeone/config/color.dart';
-import 'package:challengeone/models/story.dart';
+import 'package:challengeone/models/story_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:story_view/story_view.dart';
@@ -34,7 +34,7 @@ class StoryProvider {
           .get();
 
       return querySnapshot.docs.map((doc) {
-        Story story = Story.fromDocumentSnapshot(doc);
+        StoryModel story = StoryModel.fromDocumentSnapshot(doc);
         return StoryItem.pageImage(
           url: story.storyImageUrl,
           caption: Text(
@@ -75,10 +75,10 @@ class StoryProvider {
       List<List<StoryItem>> userStories = [];
       QuerySnapshot querySnapshot =
           await firebaseFirestore.collection('story').get();
-      Map<String, List<Story>> userStoryMap = {};
+      Map<String, List<StoryModel>> userStoryMap = {};
 
       for (var doc in querySnapshot.docs) {
-        Story story = Story.fromDocumentSnapshot(doc);
+        StoryModel story = StoryModel.fromDocumentSnapshot(doc);
         if (userStoryMap.containsKey(story.uid)) {
           userStoryMap[story.uid]!.add(story);
         } else {

@@ -1,4 +1,4 @@
-import 'package:challengeone/models/challenge.dart';
+import 'package:challengeone/models/challenge_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChallengeProvider {
@@ -7,16 +7,16 @@ class ChallengeProvider {
     required this.firebaseFirestore,
   });
 
-  Stream<List<Challenge>> getChallenges(String uid) {
+  Stream<List<ChallengeModel>> getChallenges(String uid) {
     try {
       return firebaseFirestore
           .collection('challenge')
           .where('uid', isEqualTo: uid)
           .snapshots()
           .map((querySnapshot) {
-        List<Challenge> challenges = [];
+        List<ChallengeModel> challenges = [];
         for (var challenge in querySnapshot.docs) {
-          final challengeModel = Challenge.fromDocumentSnapshot(challenge);
+          final challengeModel = ChallengeModel.fromDocumentSnapshot(challenge);
           challenges.add(challengeModel);
         }
         return challenges;
@@ -26,15 +26,15 @@ class ChallengeProvider {
     }
   }
 
-  Stream<List<Challenge>> getAllChallenges() {
+  Stream<List<ChallengeModel>> getAllChallenges() {
     try {
       return firebaseFirestore
           .collection('challenge')
           .snapshots()
           .map((querySnapshot) {
-        List<Challenge> challenges = [];
+        List<ChallengeModel> challenges = [];
         for (var challenge in querySnapshot.docs) {
-          final challengeModel = Challenge.fromDocumentSnapshot(challenge);
+          final challengeModel = ChallengeModel.fromDocumentSnapshot(challenge);
           challenges.add(challengeModel);
         }
         return challenges;

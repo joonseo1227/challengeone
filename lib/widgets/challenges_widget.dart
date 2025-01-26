@@ -1,5 +1,5 @@
 import 'package:challengeone/config/color.dart';
-import 'package:challengeone/models/challenge.dart';
+import 'package:challengeone/models/challenge_model.dart';
 import 'package:challengeone/providers/challenge_provider.dart';
 import 'package:challengeone/widgets/listtitle_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,7 +24,7 @@ class _UserChallengesState extends State<UserChallenges> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        StreamBuilder<List<Challenge>>(
+        StreamBuilder<List<ChallengeModel>>(
           stream: firebaseDB.getChallenges(widget.uid),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -99,7 +99,7 @@ class _AllChallengesState extends State<AllChallenges> {
           title: '전체 챌린지',
           subtitle: '모든 사용자의 챌린지를 확인하세요',
         ),
-        StreamBuilder<List<Challenge>>(
+        StreamBuilder<List<ChallengeModel>>(
           stream: firebaseDB.getAllChallenges(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {

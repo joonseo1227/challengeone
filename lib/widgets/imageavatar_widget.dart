@@ -1,10 +1,15 @@
 import 'package:challengeone/config/color.dart';
 import 'package:challengeone/pages/add_story_page.dart';
+import 'package:challengeone/providers/theme_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-enum Shape { ON, OFF, STORY, MYSTORY }
+import '../models/theme_model.dart';
 
-class ImageAvatar extends StatelessWidget {
+enum Shape { STORY, MYSTORY }
+
+class ImageAvatar extends ConsumerStatefulWidget {
   final double size;
   final Shape type;
   final void Function()? onTap;
@@ -19,14 +24,15 @@ class ImageAvatar extends StatelessWidget {
   });
 
   @override
+  ConsumerState<ImageAvatar> createState() => _ImageAvatarState();
+}
+
+class _ImageAvatarState extends ConsumerState<ImageAvatar> {
+  @override
   Widget build(BuildContext context) {
-    switch (type) {
+    switch (widget.type) {
       case Shape.STORY:
         return _storyAvatar(context);
-      case Shape.ON:
-        return _onAvatar();
-      case Shape.OFF:
-        return _offAvatar();
       case Shape.MYSTORY:
         return _myStoryAvatar(context);
     }
@@ -34,21 +40,28 @@ class ImageAvatar extends StatelessWidget {
 
   // 기본 아바타 위젯
   Widget _basicAvatar() {
+    final isDarkMode = ref.watch(themeProvider);
+
     return Container(
       padding: const EdgeInsets.all(3),
-      decoration: const BoxDecoration(color: white, shape: BoxShape.circle),
+      decoration: BoxDecoration(
+        color: ThemeModel.background(isDarkMode),
+        shape: BoxShape.circle,
+      ),
       child: CircleAvatar(
-        radius: size / 2,
-        backgroundImage: NetworkImage(imageUrl!),
+        radius: widget.size / 2,
+        backgroundImage: NetworkImage(widget.imageUrl!),
       ),
     );
   }
 
   // 스토리 아바타 위젯
   Widget _storyAvatar(BuildContext context) {
+    final isDarkMode = ref.watch(themeProvider);
+
     return Container(
-      height: size + 3,
-      width: size + 3,
+      height: widget.size + 3,
+      width: widget.size + 3,
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
         // 스토리 영역의 테두리를 그라데이션으로 설정
@@ -68,43 +81,18 @@ class ImageAvatar extends StatelessWidget {
         margin: const EdgeInsets.all(3),
         decoration: const BoxDecoration(
           shape: BoxShape.circle,
-          color: white,
         ),
         child: _basicAvatar(),
       ),
     );
   }
 
-  Widget _onAvatar() {
-    return Container(
-      height: size + 3,
-      width: size + 3,
-      padding: const EdgeInsets.all(3),
-      decoration: const BoxDecoration(
-        color: black,
-        shape: BoxShape.circle,
-      ),
-      child: _basicAvatar(),
-    );
-  }
-
-  Widget _offAvatar() {
-    return Container(
-      height: size + 3,
-      width: size + 3,
-      padding: const EdgeInsets.all(3),
-      decoration: const BoxDecoration(
-        color: white,
-        shape: BoxShape.circle,
-      ),
-      child: _basicAvatar(),
-    );
-  }
-
   // 내 스토리 아바타 위젯
   Widget _myStoryAvatar(BuildContext context) {
+    final isDarkMode = ref.watch(themeProvider);
+
     return GestureDetector(
-      onTap: onTap,
+      onTap: widget.onTap,
       child: Stack(
         children: [
           _storyAvatar(context),
@@ -115,13 +103,15 @@ class ImageAvatar extends StatelessWidget {
             child: InkWell(
               onTap: () {
                 Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => AddStoryPage()));
+                  CupertinoPageRoute(
+                    builder: (context) => const AddStoryPage(),
+                  ),
+                );
               },
               child: Container(
                 padding: const EdgeInsets.all(3),
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  color: grey10,
                 ),
                 child: Container(
                   width: 20,
@@ -129,7 +119,7 @@ class ImageAvatar extends StatelessWidget {
                   padding: const EdgeInsets.all(2),
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    color: blue50,
+                    color: blue60,
                   ),
                   child: const Icon(
                     size: 16,
